@@ -11,16 +11,38 @@ using OpenPKW_Mobile.Resources;
 
 namespace OpenPKW_Mobile
 {
-    public partial class MainPage : PhoneApplicationPage
+    /// <summary>
+    /// Strona wprowadzająca aplikacji
+    /// </summary>
+    public partial class IntroPage : PhoneApplicationPage
     {
         // Constructor
-        public MainPage()
+        public IntroPage()
         {
             InitializeComponent();
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
         }
+
+        /// <summary>
+        /// Obsługa przycisku "Dalej"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkBoxTermsOfUse.IsChecked == true)
+            {
+                //NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+                MessageBox.Show("Strona logowania");
+            }
+            else
+            {
+                MessageBox.Show(AppResources.IntroPage_AcceptTermsInfo);
+            }
+        }
+
 
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
