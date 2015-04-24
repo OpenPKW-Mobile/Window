@@ -97,6 +97,11 @@
     <Compile Include="IntroPage.xaml.cs">
       <DependentUpon>IntroPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\OpmAppData.cs" />
+    <Compile Include="Models\ElectoralCommision.cs" />
+    <Compile Include="SelectCommisionsPage.xaml.cs">
+      <DependentUpon>SelectCommisionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TermsOfUsePage.xaml.cs">
       <DependentUpon>TermsOfUsePage.xaml</DependentUpon>
     </Compile>
@@ -113,6 +118,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="IntroPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectCommisionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

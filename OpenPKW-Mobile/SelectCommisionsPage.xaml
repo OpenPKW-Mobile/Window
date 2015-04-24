@@ -1,0 +1,98 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="OpenPKW_Mobile.SelectCommisionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="#FFFFFF" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#93CC5A" />
+
+        </Style>
+        <Style TargetType="HyperlinkButton">
+            <Setter Property="Foreground" Value="#93CC5A" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#93CC5A" />
+            <Setter Property="Background" Value="#93CC5A" />
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="#ebebeb" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+
+        </Style>
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="191*"/>
+            <RowDefinition Height="81"/>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Border Margin="2" Background="Gray" BorderBrush="Black" BorderThickness="2">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Twoja Lista Komisji do których jesteś przypisany</TextBlock>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1" >
+            <Border BorderThickness="2" Margin="2" Background="Gray" BorderBrush="Black">
+                <TextBlock  TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center">Wybory na prezydenta Rzeczypospolitej Polskiej 10 Maja 2015 - I Tura</TextBlock>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"  TextWrapping="Wrap" TextAlignment="Center" Margin="5,20,5,20" Foreground="Black">Wybierz z listy rozwijanej komisję dla której wprowadzasz dane bądź  dodaj komisję</TextBlock>
+
+            <Border Grid.Row="1">
+                <ListBox SelectionMode="Single" Margin="0,0,0,100">
+                    <ListBoxItem>Item 1</ListBoxItem>
+                    <ListBoxItem>Item 2</ListBoxItem>
+                    <ListBoxItem>Item 3</ListBoxItem>
+                    <ListBoxItem>Item 4</ListBoxItem>
+                    <ListBoxItem>Item 5</ListBoxItem>
+                    <ListBoxItem>Item 6</ListBoxItem>
+                    <ListBoxItem>Item 7</ListBoxItem>
+                    <ListBoxItem>Item 8</ListBoxItem>
+                    <ListBoxItem>Item 9</ListBoxItem>
+                    <ListBoxItem>Item 10</ListBoxItem>
+                    <ListBoxItem>Item 11</ListBoxItem>
+                    <ListBoxItem>Item 12</ListBoxItem>
+                    <ListBoxItem>Item 13</ListBoxItem>
+                    <ListBoxItem>Item 14</ListBoxItem>
+                    <ListBoxItem>Item 15</ListBoxItem>
+                    <ListBoxItem>Item 16</ListBoxItem>
+                    <ListBoxItem>Item 17</ListBoxItem>
+                </ListBox>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Background="#FF9933" Grid.Column="0">Dodaj komisję</Button>
+            <Button Grid.Column="1">DALEJ</Button>
+        </Grid>
+
+    </Grid>
+
+</phone:PhoneApplicationPage>
