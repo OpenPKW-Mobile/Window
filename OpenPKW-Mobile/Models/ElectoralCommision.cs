@@ -11,5 +11,12 @@ namespace OpenPKW_Mobile.Models
     /// </summary>
     public class ElectoralCommision
     {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Address { get; set; }
+
+        public bool IsChecked { get; set; }
     }
 }
