@@ -15,8 +15,9 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-
     <Grid>
+        
+        <!-- okno modalne z kółkiem postępu, wyświetlane w momencie blokowania strony -->
         <Grid x:Name="layoutWait" Visibility="Collapsed" Canvas.ZIndex="1" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -28,7 +29,8 @@
             <Controls:ProgressRing Grid.Row="1" IsActive="True" Height="100" Width="100" Foreground="{StaticResource DistinctColor}" />
             <TextBlock Grid.Row="2" Text="Proszę czekać" HorizontalAlignment="Center" Foreground="White" Margin="0,20,0,0"/>
         </Grid>            
-        <!--LayoutRoot is the root grid where all page content is placed-->
+        
+        <!-- główna tabela, wyświetlana w celu wpisania poświadczeń -->
         <Grid x:Name="layoutRoot" Canvas.ZIndex="0"  
               Background="{StaticResource BackgroundColor}">
             <Grid.RowDefinitions>
@@ -37,6 +39,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- panel logowania do systemu -->
             <StackPanel Margin="20" Grid.Row="0">
                 <TextBlock Text="Zaloguj się :" />
                 <Line HorizontalAlignment="Stretch" StrokeThickness="4" Margin="0,20,0,20" Stretch="Fill" X2="100"
@@ -45,21 +48,22 @@
                 <TextBox x:Name="textUserName" InputScope="LogOnName" Margin="3,0,3,0" />
                 <TextBlock Text="Hasło :"  />
                 <PasswordBox x:Name="textUserPassword" HorizontalAlignment="Stretch" BorderThickness="3" Margin="3,0,3,0"/>
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="buttonLogin" Content="Zaloguj" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="200" 
-                            Click="buttonLogin_Click"/>
-                    <Controls:ProgressRing x:Name="progressRing" Height="50" Width="50" Margin="20,0,0,0" Foreground="Red"/>
-                </StackPanel>
+                <Button x:Name="buttonLogin" Content="Zaloguj" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="200" 
+                        Click="buttonLogin_Click"/>
                 <HyperlinkButton x:Name="linkPasswordRemind" HorizontalAlignment="Left" Content="Zapomniałeś Hasło ?" 
                                  NavigateUri="/PasswordRemindPage.xaml" />
                 <Line HorizontalAlignment="Stretch" StrokeThickness="4" Margin="0,20,0,0" Stretch="Fill" X2="100" 
                       Stroke="{StaticResource DistinctColor}"/>
             </StackPanel>
+            
+            <!-- panel tworzenia nowego użytkownika -->
             <StackPanel x:Name="panelCreate" Grid.Row="1" Margin="20,0,20,0">
                 <TextBlock Text="Nowy użytkownik :"/>
                 <Button x:Name="buttonCreate" Content="Utwórz" HorizontalAlignment="Left" VerticalAlignment="Top" Height="80" Width="200" 
                         Click="buttonCreate_Click"/>
             </StackPanel>
+            
+            <!-- panel z komunikatami dla użytkownika -->
             <StackPanel x:Name="panelWarning" Margin="5" Grid.Row="2">
                 <Border BorderBrush="Black" BorderThickness="2" Background="LightGray">
                     <TextBlock x:Name="labelMessage" Text="[tutaj będzie treść komunikatu]" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"

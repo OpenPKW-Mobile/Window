@@ -14,13 +14,34 @@ using System.Windows;
 
 namespace OpenPKW_Mobile.Services
 {
+    /// <summary>
+    /// Usługa logowania użytkownika do systemu.
+    /// </summary>
     class LoginService : ILoginService
     {
+        /// <summary>
+        /// Zestaw danych przekazywanych pomiędzy wątkami.
+        /// </summary>
+        struct WorkerData
+        {
+            public string UserName;
+            public string UserPassword;
+            public IAuthenticationProvider AuthenticationProvider;
+        }
+
         private IAuthenticationProvider _provider;
         private BackgroundWorker _worker;
 
+        public event Action<UserEntity> LoginCompleted;
+        public event Action<string> LoginRejected;
+
+        /// <summary>
+        /// Inicjalizacja serwisu logowania.
+        /// </summary>
+        /// <param name="provider"></param>
         public LoginService(IAuthenticationProvider provider)
         {
+            // przygotowanie usługi do pracy w tle
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += loginProcess;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
@@ -29,14 +50,7 @@ namespace OpenPKW_Mobile.Services
             this._worker = worker;
 
         }
-
-        struct WorkerData
-        {
-            public string UserName;
-            public string UserPassword;
-            public IAuthenticationProvider AuthenticationProvider;
-        }
-
+       
         void ILoginService.BeginLogin(string userName, string userPassword)
         {
             BackgroundWorker worker = this._worker;
@@ -49,27 +63,41 @@ namespace OpenPKW_Mobile.Services
                 AuthenticationProvider = provider
             };
 
+            // uruchomienie procedury logowania w osobnym wątku
             worker.RunWorkerAsync(data);
+
+            // tutaj cały czas trwa procedura logowania
+            // ...
         }
 
-        public event Action<UserEntity> LoginCompleted;
-        public event Action<string> LoginRejected;
-
+        /// <summary>
+        /// Obsługa wyniku procedury logowania.
+        /// </summary>
+        /// <param name="sender">Nadawca zdarzenia.</param>
+        /// <param name="e">Wyniki przetwarzania.</param>
         void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
             {
+                // poinformowanie słuchaczy o problemie
                 if (LoginRejected != null)
                     LoginRejected(e.Error.Message);
             }
             else 
             {
+                // poinformowanie słuchaczy o poprawnym wyniku logowania
+                // od tego momentu użytkownik jest identyfikowany poprzez obiekt typu [UserEntity]
                 UserEntity user = (UserEntity)e.Result;
                 if (LoginCompleted != null)
                     LoginCompleted(user);
             }
         }
 
+        /// <summary>
+        /// Procedura logowania.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void loginProcess(object sender, DoWorkEventArgs e)
         {
             var provider = ((WorkerData)e.Argument).AuthenticationProvider;
@@ -80,19 +108,30 @@ namespace OpenPKW_Mobile.Services
             string settingKey = "user";
             UserEntity user = null;
             
+            // informacja o użykowniku jest przechowywana w izolowanym miejscu
+            // jest używana do automatycznego logowania użytkownika
             IsolatedStorageSettings settings = 
                 IsolatedStorageSettings.ApplicationSettings;
 
+            // sprawdzenie obecności danych użytkownika z poprzedniego logowania
             if (settings.Contains(settingKey))
             {
+                // informacja o użytkowniku przechowywana jest w postaci szyfrowanej
+                // dane użytkownika przed użyciem należy odszyfrować
                 var encryptedUser = settings[settingKey] as byte[];
                 var userBytes = ProtectedData.Unprotect(encryptedUser, entropy);
                 var userJson = Encoding.Unicode.GetString(userBytes, 0, userBytes.Length);
                 user = JsonConvert.DeserializeObject<UserEntity>(userJson);
             }
             
+            // dwa tryby logowania:
+            // - automatyczne, gdy istnieją dane użytkownika z poprzedniego logowania
+            // - ręczne, gdy użytkownik podaje poświadczenia
             if (user != null)
             {
+                // tryb automatyczny
+                // należy sprawdzić, czy odczytane dane użytkownika są nadal prawidłowe
+                // dane użytkownik zawierają token, który powinien być ważny tylko przez pewien czas
                 if (provider.IsValid(user) == false)
                 {
                     settings.Remove(settingKey);
@@ -104,6 +143,8 @@ namespace OpenPKW_Mobile.Services
             }
             else
             {
+                // tryb ręczny
+                // niedozwolone jest logowanie przy użyciu niepełnych danych
                 if (String.IsNullOrWhiteSpace(userName))
                 {
                     throw new LoginException(
@@ -116,9 +157,13 @@ namespace OpenPKW_Mobile.Services
                 }
                 else
                 {
+                    // dane są poprawnie przygotowane
+                    // uwierzytelnianie następuje poprzez wybranego dostawcę usługi
                     user = provider.Authenticate(userName, userPassword);
                     if (user != null)
                     {
+                        // zapisanie danych użytkownika do izolowanego repozytorium
+                        // dane są przechowywane w postaci zaszyfrowanej
                         var userJson = JsonConvert.SerializeObject(user);
                         var userBytes = Encoding.Unicode.GetBytes(userJson);
                         var encryptedUser = ProtectedData.Protect(userBytes, entropy);

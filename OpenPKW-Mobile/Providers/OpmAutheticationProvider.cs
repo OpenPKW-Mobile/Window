@@ -13,6 +13,11 @@ namespace OpenPKW_Mobile.Providers
     class OpmAuthenticationProvider : IAuthenticationProvider
     {
 #if DEBUG
+        /// <summary>
+        /// Symulacja decyzji podejmowanych przez zewnętrzną usługę logowania.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private MessageBoxResult showMessage(string message)
         {
             AutoResetEvent @event = new AutoResetEvent(false);
@@ -33,9 +38,11 @@ namespace OpenPKW_Mobile.Providers
         UserEntity IAuthenticationProvider.Authenticate(string userName, string userPassword)
         {
 #if DEBUG
-            var message = String.Format("Czy zalogować użytkownika z poświadczeniami '{0} {1}' ?", userName, userPassword);            
+            var message = String.Format("Czy zalogować użytkownika z poświadczeniami '{0} {1}' ?", 
+                userName, userPassword);            
             var result = showMessage(message);
 
+            // symuluje opóżnienia w komunikacji z zewnętrzną usługą
             Thread.Sleep(3000);
 
             if (result == MessageBoxResult.Cancel)
@@ -51,19 +58,26 @@ namespace OpenPKW_Mobile.Providers
                 };                
             }
 #else
-            Thread.Sleep(5000);
+            // TODO
             return null;
 #endif
         }
 
         bool IAuthenticationProvider.IsValid(UserEntity user)
         {
-            var message = String.Format("Czy token '{0}' użytkownika '{1} {2}' jest prawidłowy ?", user.AuthenticationToken, user.FirstName, user.LastName);
+#if DEBUG
+            var message = String.Format("Czy token '{0}' użytkownika '{1} {2}' jest prawidłowy ?", 
+                user.AuthenticationToken, user.FirstName, user.LastName);
             var result = showMessage(message);
 
+            // symuluje opóżnienia w komunikacji z zewnętrzną usługą
             Thread.Sleep(3000);
 
             return (result == MessageBoxResult.OK);
+#else
+            // TODO
+            return false;
+#endif
         }
     }
 }

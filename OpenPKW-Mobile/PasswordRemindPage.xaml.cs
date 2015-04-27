@@ -10,9 +10,10 @@ using Microsoft.Phone.Shell;
 
 namespace OpenPKW_Mobile
 {
-    public partial class Page1 : PhoneApplicationPage
+    [Obsolete("Implementacja w toku")]
+    public partial class PasswordRemindPage : PhoneApplicationPage
     {
-        public Page1()
+        public PasswordRemindPage()
         {
             InitializeComponent();
         }

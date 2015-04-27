@@ -1,4 +1,5 @@
-﻿using OpenPKW_Mobile.Services;
+﻿using OpenPKW_Mobile.Entities;
+using OpenPKW_Mobile.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace OpenPKW_Mobile
 {
+    /// <summary>
+    /// Menadżer usług udostępnionych przez zewnętrzne aplikacje.
+    /// </summary>
     class ServiceManager
     {
         #region Singleton
@@ -27,6 +31,9 @@ namespace OpenPKW_Mobile
         }
         #endregion
 
+        /// <summary>
+        /// Udostępnieni serwisu logowania.
+        /// </summary>
         private ILoginService _login = null;
         public ILoginService Login
         {
@@ -38,6 +45,9 @@ namespace OpenPKW_Mobile
             }
         }
 
-        public Entities.UserEntity CurrentUser { get; set; }
+        /// <summary>
+        /// Bieżący użytkownik aplikacji.
+        /// </summary>
+        public UserEntity CurrentUser { get; set; }
     }
 }

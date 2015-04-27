@@ -14,6 +14,10 @@ namespace OpenPKW_Mobile
 {
     public partial class LoginPage : PhoneApplicationPage
     {
+        /// <summary>
+        /// Informacja dla użytkownika o błędzie logowania.
+        /// Wyświetla się na dole strony.
+        /// </summary>
         protected string Message 
         { 
             get
@@ -34,6 +38,10 @@ namespace OpenPKW_Mobile
             }
         }
 
+        /// <summary>
+        /// Określa, czy strona jest zablokowana do edycji.
+        /// Blokowanie edycji następuje w momencie komunikacji z serwerem.
+        /// </summary>
         private bool _locked = false;
         protected bool Locked 
         {
@@ -48,6 +56,9 @@ namespace OpenPKW_Mobile
             }
         }
 
+        /// <summary>
+        /// Inicjalizacja strony i wszystkich kontrolek.
+        /// </summary>
         public LoginPage()
         {
             InitializeComponent();
@@ -61,31 +72,47 @@ namespace OpenPKW_Mobile
             panelCreate.Visibility = Visibility.Collapsed;
 #endif
 
+            // podpięcie się pod zdarzenia z serwisu logowania
+            // aplikacja będzie mogła reagować w przypadku błędu lub poprawnego uwierzytelniania
             ILoginService service = ServiceManager.Instance.Login;
             service.LoginCompleted += service_LoginCompleted;
             service.LoginRejected += service_LoginRejected;
         }
 
         #region Obsługa zdarzeń z serwisu logowania
+        
+        /// <summary>
+        /// Obsługa niepoprawnego wyniku procedury uwierzytelniania.
+        /// </summary>
+        /// <param name="message"></param>
         void service_LoginRejected(string message)
         {
             Locked = false;
             Message = message;
         }
 
+        /// <summary>
+        /// Obsługa poprawnego wyniku procedury uwierzytelniania.
+        /// </summary>
+        /// <param name="user"></param>
         void service_LoginCompleted(UserEntity user)
         {
             Locked = false;
 
+            // należy zapamiętać bieżącego użytkownika
+            // będzie on używany przy komunikacji z pozostałymi serwisami (token)
             ServiceManager.Instance.CurrentUser = user;
 
+            // przejście do strony z wyborem komisji
             NavigationService.Navigate(new Uri("/SelectCommisionsPage.xaml", UriKind.Relative));
         }
-        #endregion
+
+        #endregion Obsługa zdarzeń z serwisu logowania
 
         #region Obsługa poleceń użytkownika
+
         /// <summary>
-        /// Obsługa przycisku "Zaloguj"
+        /// Obsługa przycisku "Zaloguj".
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -98,6 +125,9 @@ namespace OpenPKW_Mobile
             try
             {
                 Locked = true;
+
+                // rozpoczęcie procedury logowania użytkownika w tle
+                // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginLogin(userName, userPassword);
             }
             catch(LoginException ex)
@@ -105,6 +135,9 @@ namespace OpenPKW_Mobile
                 Locked = false;
                 Message = ex.Message;                
             }
+
+            // tutaj w tle trwa procedura logowania
+            // ...
         }
 
         /// <summary>
@@ -115,12 +148,21 @@ namespace OpenPKW_Mobile
         private void buttonCreate_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Rejestracja użytkownika");
+
+            // TODO
         }
 
+        /// <summary>
+        /// Obsługa przeniesienia nawigacji do bieżącej strony.
+        /// Próba automatycznego zalogowania użytkownika.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
+            // aplikacja spróbuje zalogować się przy użyciu zapamiętanego tokena
+            // nazwa użytkownik i hasło powinny być puste
             ILoginService service = ServiceManager.Instance.Login;
             string userName = null;
             string userPassword = null;
@@ -128,6 +170,9 @@ namespace OpenPKW_Mobile
             try
             {
                 Locked = true;
+
+                // rozpoczęcie procedury logowania użytkownika w tle
+                // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginLogin(userName, userPassword);
             }
             catch (LoginException ex)
@@ -135,6 +180,9 @@ namespace OpenPKW_Mobile
                 Locked = false;
                 Message = ex.Message;
             }
+
+            // tutaj w tle trwa procedura logowania
+            // ...
         }
         #endregion
     }

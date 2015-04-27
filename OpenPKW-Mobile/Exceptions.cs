@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace OpenPKW_Mobile
 {
+    /// <summary>
+    /// Rodzaj wyjątku używany w procesie logowania użytkownika.
+    /// </summary>
     public class LoginException : ApplicationException
     {
         public enum ErrorReason

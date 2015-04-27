@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 
 namespace OpenPKW_Mobile
 {
+    [Obsolete("Implementacja w toku")]
     public partial class SelectCommisionsPage : PhoneApplicationPage
     {
         public SelectCommisionsPage()
