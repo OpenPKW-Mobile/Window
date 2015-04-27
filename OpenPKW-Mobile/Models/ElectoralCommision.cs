@@ -17,6 +17,5 @@ namespace OpenPKW_Mobile.Models
 
         public string Address { get; set; }
 
-        public bool IsChecked { get; set; }
     }
 }
