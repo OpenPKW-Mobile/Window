@@ -34,8 +34,8 @@ namespace OpenPKW_Mobile
         {
             if (checkBoxTermsOfUse.IsChecked == true)
             {
-                //NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-                MessageBox.Show("Strona logowania");
+                NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
+                //MessageBox.Show("Strona logowania");
             }
             else
             {
