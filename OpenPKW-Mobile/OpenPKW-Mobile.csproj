@@ -98,7 +98,7 @@
       <DependentUpon>IntroPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\OpmAppData.cs" />
-    <Compile Include="Models\ElectoralCommision.cs" />
+    <Compile Include="Models\ElectoralCommission.cs" />
     <Compile Include="SelectCommisionsPage.xaml.cs">
       <DependentUpon>SelectCommisionsPage.xaml</DependentUpon>
     </Compile>

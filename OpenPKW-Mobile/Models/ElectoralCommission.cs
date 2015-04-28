@@ -9,7 +9,7 @@ namespace OpenPKW_Mobile.Models
     /// <summary>
     /// Komisja wyborcza
     /// </summary>
-    public class ElectoralCommision
+    public class ElectoralCommission
     {
         public int Id { get; set; }
 
