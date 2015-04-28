@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using OpenPKW_Mobile.Resources;
+using OpenPKW_Mobile.Providers;
 
 namespace OpenPKW_Mobile
 {
@@ -61,6 +62,7 @@ namespace OpenPKW_Mobile
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
         }
 
         // Code to execute when the application is activated (brought to foreground)
