@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using OpenPKW_Mobile.Resources;
 using OpenPKW_Mobile.Providers;
+using OpenPKW_Mobile.Models;
 
 namespace OpenPKW_Mobile
 {
@@ -56,6 +57,27 @@ namespace OpenPKW_Mobile
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            Data = new OpmAppData();
+        }
+
+        /// <summary>
+        /// Stan aplikacji OPM
+        /// </summary>
+        private OpmAppData Data
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Dane aplikacji OPM
+        /// </summary>
+        public static OpmAppData CurrentAppData
+        {
+            get
+            {
+                return (Application.Current as App).Data;
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)
