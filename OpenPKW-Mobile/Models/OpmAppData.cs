@@ -15,7 +15,7 @@ namespace OpenPKW_Mobile.Models
         /// <summary>
         /// Komisje wyborcze, wybrane przez użytkownika, dla których wysyła dane
         /// </summary>
-        public IEnumerable<CommissionEntity> SelectedCommissions { get; set; }
+        public IEnumerable<ElectoralCommission> SelectedCommisions { get; set; }
 
         /// <summary>
         /// Komisja wyborcza, aktualnie wybrana przez użytkownika

@@ -106,6 +106,7 @@
     <Compile Include="Entities\CommissionEntity.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Models\CandidateModel.cs" />
+    <Compile Include="Models\ElectoralCommission.cs" />
     <Compile Include="Models\OpmAppData.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Exceptions.cs" />
