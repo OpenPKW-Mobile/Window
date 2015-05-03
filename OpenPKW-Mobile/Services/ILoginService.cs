@@ -23,8 +23,8 @@ namespace OpenPKW_Mobile.Services
         /// Rozpoczęcie procedury uwierzytelniania.
         /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="userPassword"></param>
+        /// <param name="userName">Nazwa użytkownika.</param>
+        /// <param name="userPassword">Hasło użytkownika.</param>
         void BeginLogin(string userName, string userPassword);
 
     }

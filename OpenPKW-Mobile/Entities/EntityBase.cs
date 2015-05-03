@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OpenPKW_Mobile.Entities
 {
-    abstract class EntityBase
+    public abstract class EntityBase
     {
         public abstract string Identifier { get; }
     }

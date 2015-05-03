@@ -5,7 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls"
+    xmlns:controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls"
     x:Class="OpenPKW_Mobile.LoginPage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeMediumLarge}"
@@ -26,7 +26,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Rectangle Fill="Black" Opacity="0.8" Grid.RowSpan="4"/>
-            <Controls:ProgressRing Grid.Row="1" IsActive="True" Height="100" Width="100" Foreground="{StaticResource DistinctColor}" />
+            <controls:ProgressRing Grid.Row="1" IsActive="True" Height="100" Width="100" Foreground="{StaticResource DistinctColor}" />
             <TextBlock Grid.Row="2" Text="Proszę czekać" HorizontalAlignment="Center" Foreground="White" Margin="0,20,0,0"/>
         </Grid>            
         

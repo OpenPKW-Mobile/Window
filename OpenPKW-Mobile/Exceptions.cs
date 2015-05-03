@@ -42,4 +42,41 @@ namespace OpenPKW_Mobile
             }
         }
     }
+
+    /// <summary>
+    /// Rodzaj wyjątku używany w procesie przesyłania danych wyborów.
+    /// </summary>
+    public class VotingException : ApplicationException
+    {
+        public enum ErrorReason
+        {
+            NobodyCandidate,
+            CannotLoadCandidates,
+            CannotSendResults,
+        }
+
+        private ErrorReason _reason;
+        private Dictionary<ErrorReason, string> _messages;
+
+        public VotingException(ErrorReason reason)
+        {
+            this._reason = reason;
+            this._messages = new Dictionary<ErrorReason, string>()
+            {
+                { ErrorReason.NobodyCandidate, "System nie posiada wiedzy o kandydatach w tych wyborach." },
+                { ErrorReason.CannotLoadCandidates, "Nie udało się uzyskać informacji o liście osób kandydujących w wyborach." },
+                { ErrorReason.CannotSendResults, "Teraz nie można wysłać danych o wynikach wyborów. Poczekaj chwilę i spróbuj ponownie." },
+            };
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return this._messages[_reason];
+            }
+        }
+    }
+
+
 }

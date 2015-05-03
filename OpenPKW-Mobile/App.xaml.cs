@@ -8,11 +8,33 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using OpenPKW_Mobile.Resources;
 using OpenPKW_Mobile.Providers;
+using OpenPKW_Mobile.Entities;
+using OpenPKW_Mobile.Models;
 
 namespace OpenPKW_Mobile
 {
     public partial class App : Application
     {
+        /// <summary>
+        /// Stan aplikacji OPM
+        /// </summary>
+        private OpmAppData Data
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Dane aplikacji OPM
+        /// </summary>
+        public static OpmAppData CurrentAppData
+        {
+            get
+            {
+                return (Application.Current as App).Data;
+            }
+        }
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -56,6 +78,7 @@ namespace OpenPKW_Mobile
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            Data = new OpmAppData();
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -63,6 +86,7 @@ namespace OpenPKW_Mobile
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
+            ServiceFactory.ElectionProvider = new OpmElectionProvider();
         }
 
         // Code to execute when the application is activated (brought to foreground)

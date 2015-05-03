@@ -4,8 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls">
-
+    xmlns:controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
+    
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:OpenPKW_Mobile" x:Key="LocalizedStrings"/>
@@ -13,6 +14,8 @@
         <SolidColorBrush x:Key="DistinctColor" Color="#93CC5A"/>
         <SolidColorBrush x:Key="ForegroundColor" Color="Black"/>
         <SolidColorBrush x:Key="DisableColor" Color="Gray"/>
+        <SolidColorBrush x:Key="ErrorColor" Color="#FF4040"/>
+        <SolidColorBrush x:Key="ComplementaryColor" Color="#FF9933"/>                           
         <SolidColorBrush x:Key="PartiallyTransparentBlackColor" Color="Black" Opacity="50"/>
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource BackgroundColor}"/>
@@ -298,6 +301,42 @@
                                 </Canvas>
                             </Grid>
                         </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MessageBoxExStyle" TargetType="toolkit:CustomMessageBox">
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="Background" Value="{StaticResource PhoneChromeBrush}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="toolkit:CustomMessageBox">
+                        <Grid Background="{TemplateBinding Background}" HorizontalAlignment="Stretch">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,18">
+                                    <TextBlock x:Name="TitleTextBlock" Foreground="{TemplateBinding Foreground}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="24,16,24,-6" Text="{TemplateBinding Title}" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="CaptionTextBlock" Foreground="{TemplateBinding Foreground}" FontSize="{StaticResource PhoneFontSizeLarge}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" HorizontalAlignment="Left" Margin="24,8,24,0" TextWrapping="Wrap" Text="{TemplateBinding Caption}" Visibility="Collapsed"/>
+                                    <TextBlock x:Name="MessageTextBlock" Foreground="{TemplateBinding Foreground}" FontSize="{StaticResource PhoneFontSizeMedium}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" HorizontalAlignment="Left" Margin="24,11,24,0" TextWrapping="Wrap" Text="{TemplateBinding Message}" Visibility="Collapsed"/>
+                                    <ContentPresenter Margin="12,0,0,0"/>
+                                </StackPanel>
+                                <Button x:Name="LeftButton" Background="{StaticResource ComplementaryColor}" Content="{TemplateBinding LeftButtonContent}" Grid.Column="0" Foreground="{TemplateBinding Foreground}" toolkit:TiltEffect.IsTiltEnabled="True" IsEnabled="{TemplateBinding IsLeftButtonEnabled}" Margin="12,0,0,12" Grid.Row="1" Visibility="Collapsed"/>
+                                <Button x:Name="RightButton" Background="{TemplateBinding Background}" Content="{TemplateBinding RightButtonContent}" Grid.Column="1" Foreground="{TemplateBinding Foreground}" toolkit:TiltEffect.IsTiltEnabled="True" IsEnabled="{TemplateBinding IsRightButtonEnabled}" Margin="0,0,12,12" Grid.Row="1" Visibility="Collapsed"/>
+                            </Grid>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

@@ -48,7 +48,6 @@ namespace OpenPKW_Mobile.Services
 
             this._provider = provider;
             this._worker = worker;
-
         }
        
         void ILoginService.BeginLogin(string userName, string userPassword)

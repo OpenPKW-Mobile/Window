@@ -10,8 +10,19 @@ namespace OpenPKW_Mobile
 {
     static class ServiceFactory
     {
+        /// <summary>
+        /// Dostawca usługi logowania.
+        /// </summary>
         public static IAuthenticationProvider AuthenticationProvider;
+        
+        /// <summary>
+        /// Dostawca usługi głosowania.
+        /// </summary>
+        public static IElectionProvider ElectionProvider;
 
+        /// <summary>
+        /// Tworzy nową usługę logowania.
+        /// </summary>
         public static LoginService Login
         {
             get
@@ -19,5 +30,17 @@ namespace OpenPKW_Mobile
                 return new LoginService(AuthenticationProvider);
             }
         }
+
+        /// <summary>
+        /// Tworzy nową usługę głosowania.
+        /// </summary>
+        public static VotingService Voting
+        {
+            get
+            {
+                return new VotingService(ElectionProvider);
+            }
+        }
+
     }
 }

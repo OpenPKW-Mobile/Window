@@ -32,7 +32,7 @@ namespace OpenPKW_Mobile
         #endregion
 
         /// <summary>
-        /// Udostępnieni serwisu logowania.
+        /// Udostępnienie serwisu logowania.
         /// </summary>
         private ILoginService _login = null;
         public ILoginService Login
@@ -42,6 +42,20 @@ namespace OpenPKW_Mobile
                 if (_login == null)
                     _login = ServiceFactory.Login;
                 return _login;
+            }
+        }
+
+        /// <summary>
+        /// Udostępnienie serwisu głosowania.
+        /// </summary>
+        private IVotingService _voting = null;
+        public IVotingService Voting
+        {
+            get
+            {
+                if (_voting == null)
+                    _voting = ServiceFactory.Voting;
+                return _voting;
             }
         }
 

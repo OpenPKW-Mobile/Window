@@ -8,11 +8,25 @@ namespace OpenPKW_Mobile.Entities
 {
     class UserEntity : EntityBase
     {
+        /// <summary>
+        /// Identyfikator użytkownika.
+        /// </summary>
         public string UserID { get; set; }
-        public string AuthenticationToken { get; set; }
 
+        /// <summary>
+        /// Imię.
+        /// </summary>
         public string FirstName { get; set; }
+
+        /// <summary>
+        /// Nazwisko.
+        /// </summary>
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Token.
+        /// </summary>
+        public string AuthenticationToken { get; set; }
 
         public override string Identifier
         {

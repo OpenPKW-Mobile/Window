@@ -104,7 +104,10 @@ namespace OpenPKW_Mobile
             ServiceManager.Instance.CurrentUser = user;
 
             // przejście do strony z wyborem komisji
-            NavigationService.Navigate(new Uri("/SelectCommisionsPage.xaml", UriKind.Relative));
+            MessageBox.Show("Wybór komisji wyborczej (tymczasowo skok do wprowadzania danych wybórów)", "Zmiana strony", MessageBoxButton.OK);
+            NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));
+
+            // TODO
         }
 
         #endregion Obsługa zdarzeń z serwisu logowania
@@ -147,7 +150,7 @@ namespace OpenPKW_Mobile
         /// <param name="e"></param>
         private void buttonCreate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Rejestracja użytkownika");
+            MessageBox.Show("Rejestracja użytkownika", "Zmiana strony", MessageBoxButton.OK);
 
             // TODO
         }
