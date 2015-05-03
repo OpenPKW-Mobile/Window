@@ -132,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SelectCommisionsPage.xaml.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="ServiceManager.cs" />
     <Compile Include="Services\ILoginService.cs" />
@@ -162,6 +163,10 @@
     <Page Include="PasswordRemindPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectCommisionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
