@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 namespace OpenPKW_Mobile
 {
     /// <summary>
-    /// Strona wykonywania zdjęć protokołu
+    /// Strona wykonywania i akceptacji zdjęć protokołu
     /// </summary>
     /// <remarks>
     /// Id komisji przekazywane jest w parametrze commissionId Uri.
@@ -22,9 +22,16 @@ namespace OpenPKW_Mobile
     /// </remarks>
     public partial class TakePhotoPage : PhoneApplicationPage
     {
+        /// <summary>
+        /// Id komisji dla której wykonujemy zdjęcia protokołów
+        /// </summary>
         int _commissionId;
 
+        /// <summary>
+        /// Wykonane i zaakceptowane zdjęcia / strony protokołu
+        /// </summary>
         IList<ProtocolPage> _protocolPages;
+
 
         CameraCaptureTask _cameraCaptureTask = new CameraCaptureTask();
 
@@ -50,7 +57,7 @@ namespace OpenPKW_Mobile
                 BitmapImage bitmapImage = new BitmapImage();
                 bitmapImage.SetSource(e.ChosenPhoto);
                 image.Source = bitmapImage;
-                setState(State.Accept);
+                setState(TakePhotoPageState.Accept);
             }
         }
 
@@ -58,9 +65,9 @@ namespace OpenPKW_Mobile
         /// Ustawienie stanu strony: robienie zdjęcia lub akceptacja
         /// </summary>
         /// <param name="state"></param>
-        private void setState(State state)
+        private void setState(TakePhotoPageState state)
         {
-            if (state == State.Accept)
+            if (state == TakePhotoPageState.Accept)
             {
                 buttonFinish.Visibility = System.Windows.Visibility.Collapsed;
                 buttonTakePhoto.Visibility = System.Windows.Visibility.Collapsed;
@@ -68,7 +75,7 @@ namespace OpenPKW_Mobile
                 buttonAccept.Visibility = System.Windows.Visibility.Visible;
                 textBlockInfo.Text = "Czy zdjęcie jest wyraźne i dobrze wykadrowane? Jeśli nie ,ponów próbę";
             }
-            else if (state == State.TakePhoto)
+            else if (state == TakePhotoPageState.TakePhoto)
             {
                 buttonFinish.Visibility = System.Windows.Visibility.Visible;
                 buttonTakePhoto.Visibility = System.Windows.Visibility.Visible;
@@ -94,11 +101,13 @@ namespace OpenPKW_Mobile
 
 
 
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        /// <summary>
+        /// Obsługa zdarzenia nawigacji do strony
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _commissionId = int.Parse(NavigationContext.QueryString["commissionId"]);
-            setState(State.TakePhoto);
             textBlockCommissionId.Text = _commissionId.ToString();
             if (!App.CurrentAppData.ProtocolPages.ContainsKey(_commissionId))
             {
@@ -108,10 +117,14 @@ namespace OpenPKW_Mobile
             base.OnNavigatedFrom(e);
         }
 
-
+        /// <summary>
+        /// Obsługa zdarzenia załadowania strony
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+            setState(TakePhotoPageState.TakePhoto);
         }
 
         /// <summary>
@@ -121,7 +134,7 @@ namespace OpenPKW_Mobile
         /// <param name="e"></param>
         private void buttonRetake_Click(object sender, RoutedEventArgs e)
         {
-            setState(State.TakePhoto);
+            setState(TakePhotoPageState.TakePhoto);
         }
 
         /// <summary>
@@ -134,13 +147,13 @@ namespace OpenPKW_Mobile
             ProtocolPage pageImage = new ProtocolPage();
             pageImage.Image = image.Source as BitmapImage;
             _protocolPages.Add(pageImage);
-            setState(State.TakePhoto);
+            setState(TakePhotoPageState.TakePhoto);
         }
 
         /// <summary>
         /// Stan strony
         /// </summary>
-        enum State
+        enum TakePhotoPageState
         {
             Accept,
             TakePhoto
