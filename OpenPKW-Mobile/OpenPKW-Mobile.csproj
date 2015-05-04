@@ -93,28 +93,77 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters.cs" />
+    <Compile Include="EnterVotesPage.xaml.cs">
+      <DependentUpon>EnterVotesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ElectionEntity.cs" />
+    <Compile Include="Enumerations.cs" />
+    <Compile Include="Mocks\DesignBallotBoxModel.cs" />
+    <Compile Include="Mocks\DesignCandidateModels.cs" />
+    <Compile Include="Models\BallotBoxModel.cs" />
+    <Compile Include="Entities\CandidateEntity.cs" />
+    <Compile Include="Entities\CommissionEntity.cs" />
+    <Compile Include="Entities\EntityBase.cs" />
+    <Compile Include="Models\CandidateModel.cs" />
+    <Compile Include="Models\ElectoralCommission.cs" />
+    <Compile Include="Models\OpmAppData.cs" />
+    <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="IntroPage.xaml.cs">
       <DependentUpon>IntroPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mocks\DesignCommissionEntity.cs" />
+    <Compile Include="Models\ValueEntry.cs" />
     <Compile Include="PasswordRemindPage.xaml.cs">
       <DependentUpon>PasswordRemindPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\IAuthenticationProvider.cs" />
+    <Compile Include="Providers\IElectionProvider.cs" />
+    <Compile Include="Providers\OpmAutheticationProvider.cs" />
+    <Compile Include="Providers\OpmElectionProvider.cs" />
+    <Compile Include="Providers\ProviderBase.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\IRemindService.cs" />
-    <Compile Include="Services\RemindService.cs" />
+    <Compile Include="SelectCommisionsPage.xaml.cs" />
+    <Compile Include="ServiceFactory.cs" />
+    <Compile Include="ServiceManager.cs" />
+    <Compile Include="Services\ILoginService.cs" />
+    <Compile Include="Services\IVotingService.cs" />
+    <Compile Include="Services\LoginService.cs" />
+    <Compile Include="Services\VotingService.cs" />
+    <Compile Include="Utils\BackgroundWorkerEx.cs" />
+    <Compile Include="Utils\DictionaryEx.cs" />
+    <Compile Include="Utils\Range.cs" />
+    <Compile Include="TakePhotoPage.xaml.cs">
+      <DependentUpon>TakePhotoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TermsOfUsePage.xaml.cs">
+      <DependentUpon>TermsOfUsePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="EnterVotesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="IntroPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,8 +171,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SelectCommisionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TakePhotoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TermsOfUsePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -157,6 +219,20 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenPKW-Mobile.Controls\OpenPKW-Mobile.Controls.csproj">
+      <Project>{31483C4B-99A8-4A92-AD35-60F23C04D733}</Project>
+      <Name>OpenPKW-Mobile.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
+      <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

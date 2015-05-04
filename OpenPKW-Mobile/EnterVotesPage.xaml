@@ -1,0 +1,218 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="OpenPKW_Mobile.EnterVotesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mock="clr-namespace:OpenPKW_Mobile.Mocks"
+    xmlns:local="clr-namespace:OpenPKW_Mobile"
+    xmlns:controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls"
+   
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <local:ValueEntryToColorConverter x:Key="converter"/>
+        <local:ValueEntryToTextConverter x:Key="converter2"/>
+        <local:ArrayToVisibilityConverter x:Key="converter3"/>
+        <local:PageStateToColorConverter x:Key="converter4"/>
+        <local:PageStateToVisibilityConverter x:Key="converter5"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid>    
+        
+        <!-- okno modalne z kółkiem postępu, wyświetlane w momencie blokowania strony -->
+        <Grid x:Name="layoutWait" Visibility="Collapsed" Canvas.ZIndex="1" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="Black" Opacity="0.8" Grid.RowSpan="4"/>
+            <controls:ProgressRing Grid.Row="1" IsActive="True" Height="100" Width="100" Foreground="{StaticResource DistinctColor}" />
+            <TextBlock Grid.Row="2" Text="Proszę czekać" HorizontalAlignment="Center" Foreground="White" Margin="0,20,0,0"/>
+        </Grid>
+
+        <!-- główna tabela, wyświetlana w celu wpisania wyników głosowania -->
+        <Grid x:Name="layoutRoot" 
+          Background="{StaticResource BackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="683*"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer>
+                <StackPanel Margin="10">
+                    
+                    <!-- dane aktualnej komisji wyborczej -->
+                    <Grid x:Name="gridCommission" 
+                      DataContext="{Binding Path=Commission}"
+                      d:DataContext="{d:DesignInstance Type=mock:DesignCommissionEntity, IsDesignTimeCreatable=True}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock x:Name="labelCommisionType" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="{Binding Path=Type}"
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+                            Grid.Row="1" Grid.Column="0">
+                            <TextBlock x:Name="labelCommissionTitle" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="{Binding Path=Title}" 
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+                            Grid.Row="1" Grid.Column="1">
+                            <TextBlock x:Name="labelCommissionIdentifier" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="{Binding Path=Id}" 
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+                            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock x:Name="labelCommissionPlace" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="{Binding Path=Place}" 
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+                            Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                            <TextBlock x:Name="labelCommissionAddress" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   Text="{Binding Path=Address}" 
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                        
+                        <!-- zmiana komisji wyborczej -->
+                        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="85"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="1" x:Name="buttonCommissionChange" Content="INNA KOMISJA?" Margin="-5,0,-12,0" 
+                            Background="{StaticResource ComplementaryColor}" Click="buttonCommissionChange_Click"/>
+                        </Grid>
+                    </Grid>
+
+                    <!-- dane sumaryczne wyników głosowania -->
+                    <Grid x:Name="gridSummary" Margin="2"
+                      DataContext="{Binding Path=BallotBox}"
+                      d:DataContext="{d:DesignInstance Type=mock:DesignBallotBoxModel, IsDesignTimeCreatable=True}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="I.1. Uprawnionych do głosowania"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="I.4. Wydano kart do głosowania"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="II.11. Kart ważnych"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="II.12. Głosów nieważnych"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="II.13. Głosów ważnych"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                             FontSize="{StaticResource PhoneFontSizeMedium}" 
+                             Text="{Binding Path=Voters, Mode=TwoWay, Converter={StaticResource converter2}}"
+                             Background="{Binding Path=Voters, Converter={StaticResource converter}}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                             FontSize="{StaticResource PhoneFontSizeMedium}" 
+                             Text="{Binding Path=Cards, Mode=TwoWay, Converter={StaticResource converter2}}"
+                             Background="{Binding Path=Cards, Converter={StaticResource converter}}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                             FontSize="{StaticResource PhoneFontSizeMedium}" 
+                             Text="{Binding Path=ValidCards, Mode=TwoWay, Converter={StaticResource converter2}}"
+                             Background="{Binding Path=ValidCards, Converter={StaticResource converter}}"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                             FontSize="{StaticResource PhoneFontSizeMedium}" 
+                             Text="{Binding Path=InvalidVotes, Mode=TwoWay, Converter={StaticResource converter2}}"
+                             Background="{Binding Path=InvalidVotes, Converter={StaticResource converter}}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                             FontSize="{StaticResource PhoneFontSizeMedium}" 
+                             Text="{Binding Path=ValidVotes, Mode=TwoWay, Converter={StaticResource converter2}}"
+                             Background="{Binding Path=ValidVotes, Converter={StaticResource converter}}"/>
+                    </Grid>
+
+                    <!-- dane szczegółowe wyników głosowania z podziałem na kandydatów -->
+                    <TextBlock Text="II.14. Kandydaci otrzymali głosów ważnych :" Margin="2"/>
+
+                    <phone:LongListSelector LayoutMode="List" Margin="2,10,2,10"
+                                            Foreground="{StaticResource ForegroundColor}"
+                                            ItemsSource="{Binding Path=Candidates}" 
+                                            Visibility="{Binding Path=Candidates, Converter={StaticResource converter3}}"
+                                            d:DataContext="{d:DesignInstance Type=mock:DesignCandidateModels, IsDesignTimeCreatable=True}">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:Name="gridCandidate">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="0" Padding="4,0,4,0">
+                                        <TextBlock Text="{Binding Path=Position}" HorizontalAlignment="Center"/>
+                                    </Border>
+                                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="1" Padding="4,0,4,0">
+                                        <TextBlock Text="{Binding Path=Candidate}" TextWrapping="Wrap"/>
+                                    </Border>
+                                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="0" Grid.Column="2" Padding="0,2,0,2">
+                                        <TextBox Height="70" Margin="0,-10,0,-10" InputScope="Number" TextAlignment="Center" 
+                                                 FontSize="{StaticResource PhoneFontSizeMedium}" 
+                                                 Text="{Binding Path=Votes, Mode=TwoWay, Converter={StaticResource converter2}}"
+                                                 Background="{Binding Path=Votes, Converter={StaticResource converter}}"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                               
+                    <!-- panel z komunikatami dla użytkownika -->
+                    <StackPanel x:Name="panelWarning" Margin="2" Grid.Row="1">
+                        <Border BorderThickness="2" Background="LightGray" Padding="20" Margin="0,10,0,0"
+                            BorderBrush="{Binding Path=PageState, Converter={StaticResource converter4}}"> 
+                            <TextBlock x:Name="labelMessage" Text="[tutaj będzie treść komunikatu]" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                        </Border>
+                    </StackPanel>
+
+                    <!-- przyciski do nawigacji pomiędzy stronami -->
+                    <Button x:Name="buttonNext" Content="DALEJ"  Margin="2,0,-2,0" Height="85" Click="buttonNext_Click"
+                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}}"/>
+                    <Button x:Name="buttonSkip" Content="POMIŃ"  Margin="2,0,-2,0" Height="85" Click="buttonSkip_Click"
+                            Background="{StaticResource ComplementaryColor}"
+                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}, ConverterParameter=invert}"/>
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

@@ -28,5 +28,7 @@
 *.app
 /OpenPKW-Mobile/Bin
 /OpenPKW-Mobile/obj
-/OpenPKW-Mobile/OpenPKW-Mobile.csproj.user
+/OpenPKW-Mobile.Controls/Bin
+/OpenPKW-Mobile.Controls/obj
+/OpenPKW-Mobile.Controls/OpenPKW-Mobile.Controls.csproj.user
 /OpenPKW-Mobile.v12.suo

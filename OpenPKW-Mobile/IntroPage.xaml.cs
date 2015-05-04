@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define EMRON
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -34,8 +36,7 @@ namespace OpenPKW_Mobile
         {
             if (checkBoxTermsOfUse.IsChecked == true)
             {
-                //NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-                MessageBox.Show("Strona logowania");
+                NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
             }
             else
             {
@@ -43,21 +44,14 @@ namespace OpenPKW_Mobile
             }
         }
 
+#if EMRON
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
-
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
-
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+            NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));
+            
+        }
+#endif
     }
 }
