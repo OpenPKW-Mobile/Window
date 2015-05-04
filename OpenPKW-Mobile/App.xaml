@@ -17,6 +17,15 @@
         <SolidColorBrush x:Key="ErrorColor" Color="#FF4040"/>
         <SolidColorBrush x:Key="ComplementaryColor" Color="#FF9933"/>                           
         <SolidColorBrush x:Key="PartiallyTransparentBlackColor" Color="Black" Opacity="50"/>
+        <SolidColorBrush x:Key="GreyColor" Color="#E6E6E6"/>
+        <SolidColorBrush x:Key="GreenColor" Color="#93CC5A"/>
+        <SolidColorBrush x:Key="OrangeColor" Color="#FF9933"/>        
+        <Style TargetType="Border" x:Key="Header">
+            <Setter Property="Background" Value="{StaticResource GreyColor}" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource BackgroundColor}"/>
             <Setter Property="Background" Value="{StaticResource DistinctColor}"/>

@@ -191,7 +191,9 @@ namespace OpenPKW_Mobile
             App.CurrentAppData.Election = BallotBox.GetResults();
             App.CurrentAppData.Candidates = Candidates.Select(model => { model.Candidate.Votes = model.Votes; return model.Candidate; }).ToArray();
 
-            MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
+            navigateToTakePhotoPage();
+
+            //MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
 
             // TODO
         }
@@ -216,11 +218,19 @@ namespace OpenPKW_Mobile
             };
             messageBox.LeftButtonPressed += delegate
             {
-                MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
-
+                //MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
+                navigateToTakePhotoPage();
                 // TODO
             };
             messageBox.Show();
+        }
+
+        /// <summary>
+        /// Nawigacja do strony wykonywania zdjęć
+        /// </summary>
+        private void navigateToTakePhotoPage()
+        {
+            NavigationService.Navigate(new Uri("/TakePhotoPage.xaml?commissionId=2", UriKind.Relative));
         }
 
         /// <summary>

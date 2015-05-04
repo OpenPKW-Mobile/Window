@@ -143,6 +143,12 @@
     <Compile Include="Utils\BackgroundWorkerEx.cs" />
     <Compile Include="Utils\DictionaryEx.cs" />
     <Compile Include="Utils\Range.cs" />
+    <Compile Include="TakePhotoPage.xaml.cs">
+      <DependentUpon>TakePhotoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TermsOfUsePage.xaml.cs">
+      <DependentUpon>TermsOfUsePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -166,6 +172,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SelectCommisionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TakePhotoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TermsOfUsePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
