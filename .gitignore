@@ -26,3 +26,7 @@
 *.exe
 *.out
 *.app
+/OpenPKW-Mobile/Bin
+/OpenPKW-Mobile/obj
+/OpenPKW-Mobile/OpenPKW-Mobile.csproj.user
+/OpenPKW-Mobile.v12.suo

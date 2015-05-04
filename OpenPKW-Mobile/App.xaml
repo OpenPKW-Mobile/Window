@@ -7,6 +7,65 @@
 
     <!--Application Resources-->
     <Application.Resources>
+
+        <Style x:Key="PageBackground" TargetType="Grid">            
+            <Setter Property="Background" Value="White" />            
+        </Style>
+
+        <Style x:Key="ControlLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="30,30, 20,10" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontFamily" Value="Helvetica" />
+        </Style>
+               
+        <Style x:Key="MessageBox" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="20,20, 20,20" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontFamily" Value="Helvetica" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="MessageBoxBorder" TargetType="Border">
+            <Setter Property="Background" Value="#E6E6E6" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="10,10, 10,10" />
+        </Style>
+
+        <Style x:Key="TextBoxControl" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="80" />
+            <Setter Property="BorderBrush" Value="#999999" />
+            <Setter Property="Margin" Value="5, -10, 5, 10" />
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}" />
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}" />
+        </Style>
+
+        <Style x:Key="HorizontalRule" TargetType="Line">
+            <Setter Property="Stroke" Value="#CCFFCC" />
+            <Setter Property ="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="20, 10, 5, 10" />
+            <Setter Property="StrokeThickness" Value="4" />
+            <Setter Property="X1" Value="0" />
+            <Setter Property="X2" Value="430" />
+        </Style>
+
+        <Style x:Key="GreenButton" TargetType="Button">
+            <Setter Property="Background" Value="#93CC5A" />
+            <Setter Property ="HorizontalAlignment" Value="Center" />
+            <Setter Property="Width" Value="auto" />
+            <Setter Property="FontSize" Value="40" />            
+        </Style>
+
+        <Style x:Key="MyTextNormalStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}" />
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}" />
+    </Style>
+        
         <local:LocalizedStrings xmlns:local="clr-namespace:OpenPKW_Mobile" x:Key="LocalizedStrings"/>
     </Application.Resources>
 
