@@ -34,6 +34,45 @@ namespace OpenPKW_Mobile
             };
         }
 
+
+
+        public override string Message
+        {
+            get
+            {
+                return this._messages[_reason];
+            }
+        }
+    }
+
+    /// <summary>
+    /// Rodzaj wyjątku używany w procesie odzyskiwania hasła przez użytkownika.
+    /// </summary>
+    public class RemindException : ApplicationException
+    {
+        public enum ErrorReason
+        {
+            AnonymousNotAllowed,
+            EmailRequired,
+            IncorrectNameOrEmail            
+        }
+
+        private ErrorReason _reason;
+        private Dictionary<ErrorReason, string> _messages;
+
+        public RemindException(ErrorReason reason)
+        {
+            this._reason = reason;
+            this._messages = new Dictionary<ErrorReason, string>()
+            {
+                { ErrorReason.AnonymousNotAllowed, "Aby odzyskać hasło do systemu, musisz podać nazwę użytkownika oraz adres mailowy." },
+                { ErrorReason.EmailRequired, "Powinieneś podać adres e-mail, które otrzymałeś od administratora systemu." },
+                { ErrorReason.IncorrectNameOrEmail, "Prawdopodobnie popełniłeś błąd wprowadzając nazwę użytkownika lub adres mailowy." }                
+            };
+        }
+
+
+
         public override string Message
         {
             get

@@ -18,6 +18,14 @@ namespace OpenPKW_Mobile.Providers
         UserEntity Authenticate(string userName, string userPassword);
 
         /// <summary>
+        /// Odzyskiwanie hasła
+        /// </summary>
+        /// <param name="userName">Nazwa użytkownika.</param>
+        /// <param name="userEmail">E-mail użytkownika.</param>
+        /// <returns>informacja, czy powiodło się wysłanie prośby o odzyskanie hasła</returns>
+        bool PasswordRemind(string userName, string userEmail);
+
+        /// <summary>
         /// Sprawdzenie ważności sesji.
         /// </summary>
         /// <param name="user">Dane użytkownika.</param>

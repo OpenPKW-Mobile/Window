@@ -24,6 +24,6 @@ namespace OpenPKW_Mobile.Services
         /// </summary>
         /// <param name="userName">Nazwa użytkownika.</param>
         /// <param name="userEmail">E-mail użytkownika.</param>        
-        void RemindLogin(string userName, string userEmail);
+        void BeginRemind(string userName, string userEmail);
     }
 }

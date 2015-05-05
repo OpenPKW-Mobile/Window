@@ -40,6 +40,30 @@ namespace OpenPKW_Mobile.Providers
 #endif
         }
 
+        bool IAuthenticationProvider.PasswordRemind(string userName, string userEmail)
+        {
+#if DEBUG
+            var message = String.Format("Czy wysłać na adres mailowy {1} linka umożliwiającego zresetowanie hasła użytkownika {0}?",
+                userName, userEmail);
+            var result = ShowMessage(message);
+
+            // symuluje opóżnienia w komunikacji z zewnętrzną usługą
+            Thread.Sleep(3000);
+
+            if (result == MessageBoxResult.Cancel)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+#else
+            // TODO
+            return null;
+#endif
+        }
+
         bool IAuthenticationProvider.IsValid(UserEntity user)
         {
 #if DEBUG
