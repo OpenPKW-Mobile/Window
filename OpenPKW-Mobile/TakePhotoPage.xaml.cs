@@ -158,5 +158,10 @@ namespace OpenPKW_Mobile
             Accept,
             TakePhoto
         }
+
+        private void buttonFinish_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/PreviewDataPage.xaml", UriKind.Relative));            
+        }
     }
 }

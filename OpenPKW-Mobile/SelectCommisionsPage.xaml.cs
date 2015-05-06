@@ -132,7 +132,9 @@ namespace OpenPKW_Mobile
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             App.CurrentAppData.SelectedCommisions = listBoxCommissions.SelectedItems.Cast<ElectoralCommission>();
-            MessageBox.Show("Wybrano pozycji: " + App.CurrentAppData.SelectedCommisions.Count());
+            //MessageBox.Show("Wybrano pozycji: " + App.CurrentAppData.SelectedCommisions.Count());
+
+            NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));                        
         }
     }
 }

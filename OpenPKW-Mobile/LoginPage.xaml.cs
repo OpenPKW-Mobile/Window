@@ -104,10 +104,7 @@ namespace OpenPKW_Mobile
             ServiceManager.Instance.CurrentUser = user;
 
             // przejście do strony z wyborem komisji
-            MessageBox.Show("Wybór komisji wyborczej (tymczasowo skok do wprowadzania danych wybórów)", "Zmiana strony", MessageBoxButton.OK);
-            NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));
-
-            // TODO
+            NavigationService.Navigate(new Uri("/SelectCommisionsPage.xaml", UriKind.Relative));            
         }
 
         #endregion Obsługa zdarzeń z serwisu logowania

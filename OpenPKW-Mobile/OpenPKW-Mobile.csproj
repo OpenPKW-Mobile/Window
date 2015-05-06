@@ -98,9 +98,11 @@
       <DependentUpon>EnterVotesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\ElectionEntity.cs" />
+    <Compile Include="Entities\PhotoEntity.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Mocks\DesignBallotBoxModel.cs" />
     <Compile Include="Mocks\DesignCandidateModels.cs" />
+    <Compile Include="Mocks\DesignPhotoModels.cs" />
     <Compile Include="Models\BallotBoxModel.cs" />
     <Compile Include="Entities\CandidateEntity.cs" />
     <Compile Include="Entities\CommissionEntity.cs" />
@@ -118,9 +120,13 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mocks\DesignCommissionEntity.cs" />
+    <Compile Include="Models\PhotoModel.cs" />
     <Compile Include="Models\ValueEntry.cs" />
     <Compile Include="PasswordRemindPage.xaml.cs">
       <DependentUpon>PasswordRemindPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDataPage.xaml.cs">
+      <DependentUpon>PreviewDataPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\IAuthenticationProvider.cs" />
@@ -170,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PasswordRemindPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

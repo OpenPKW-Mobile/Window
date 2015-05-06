@@ -40,7 +40,7 @@
                 <ColumnDefinition Width="239*"/>
                 <ColumnDefinition Width="241*"/>
             </Grid.ColumnDefinitions>
-            <Button Background="{StaticResource OrangeColor}" Name="buttonFinish" Grid.Column="0" >Koniec Zdjęć</Button>
+            <Button Background="{StaticResource OrangeColor}" Name="buttonFinish" Grid.Column="0" Click="buttonFinish_Click" >Koniec Zdjęć</Button>
             <Button Grid.Column="1" Name="buttonTakePhoto" Click="buttonNext_Click" >Dalej</Button>
             <Button Visibility="Collapsed" Background="{StaticResource OrangeColor}" Name="buttonRetake" Grid.Column="0" Click="buttonRetake_Click" >PONÓW</Button>
             <Button Visibility="Collapsed" Grid.Column="1" Name="buttonAccept" Click="buttonAccept_Click"  >KOLEJNE</Button>            
