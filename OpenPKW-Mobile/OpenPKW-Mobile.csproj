@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Mocks\DesignCommissionEntity.cs" />
     <Compile Include="Models\ValueEntry.cs" />
+    <Compile Include="Services\OpenPkwApiClient.cs" />
     <Compile Include="PasswordRemindPage.xaml.cs">
       <DependentUpon>PasswordRemindPage.xaml</DependentUpon>
     </Compile>
