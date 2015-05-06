@@ -191,7 +191,8 @@ namespace OpenPKW_Mobile
             App.CurrentAppData.Election = BallotBox.GetResults();
             App.CurrentAppData.Candidates = Candidates.Select(model => { model.Candidate.Votes = model.Votes; return model.Candidate; }).ToArray();
 
-            MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
+            MessageBox.Show("Wykonanie zdjęć protokołów (tymczasowo skok do podgląd danych)", "Zmiana strony", MessageBoxButton.OK);
+            NavigationService.Navigate(new Uri("/PreviewDataPage.xaml", UriKind.Relative));
 
             // TODO
         }
@@ -216,7 +217,8 @@ namespace OpenPKW_Mobile
             };
             messageBox.LeftButtonPressed += delegate
             {
-                MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
+                MessageBox.Show("Wykonanie zdjęć protokołów (tymczasowo skok do podgląd danych)", "Zmiana strony", MessageBoxButton.OK);
+                NavigationService.Navigate(new Uri("/PreviewDataPage.xaml", UriKind.Relative));
 
                 // TODO
             };
