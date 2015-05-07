@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenPKW_Mobile.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,7 +39,7 @@ namespace OpenPKW_Mobile.Services
         /// <param name="login">użytkownik</param>
         /// <param name="password">hasło</param>
         /// <returns></returns>
-        public async Task<string> GetUserToken(string login, string password)
+        public async Task<UserEntity> GetUserAsync(string login, string password)
         {
             WebHeaderCollection headers = new WebHeaderCollection();
             headers["X-OPW-login"] = login;
@@ -47,8 +48,7 @@ namespace OpenPKW_Mobile.Services
                 headers);
             try
             {
-                var userJson = JsonConvert.DeserializeObject(jsonResponse);
-                return ((userJson as Newtonsoft.Json.Linq.JObject)["token"] as Newtonsoft.Json.Linq.JValue).Value as string;
+                return JsonHelper.FromJson<UserEntity>(jsonResponse);
             }
             catch (Exception ex)
             {
@@ -128,6 +128,47 @@ namespace OpenPKW_Mobile.Services
 
         }
     }
+    
+    [DataContract]
+    public class UserTst
+    {
+        [DataMember(Name = "id")]
+        public int Id {get;set;}
+        [DataMember(Name="fullname")]
+        public string FullName {get;set;}
+        [DataMember]
+        public string firstname { get; set; }
+        [DataMember]
+        public string login { get; set; }
+        [DataMember]
+        public string token { get; set; }
+        [DataMember]
+        public bool sessionActive { get; set; }
+        [DataMember]
+        public string sessionTimeout { get; set; }
+    }
 
+
+    public static class JsonHelper
+    {
+        public static string ToJson<T>(T instance)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            using (var tempStream = new MemoryStream())
+            {
+                serializer.WriteObject(tempStream, instance);
+                return Encoding.Unicode.GetString(tempStream.ToArray(),0, tempStream.ToArray().Length);
+            }
+        }
+
+        public static T FromJson<T>(string json)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(T));
+            using (var tempStream = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            {
+                return (T)serializer.ReadObject(tempStream);
+            }
+        }
+    }
 
 }
