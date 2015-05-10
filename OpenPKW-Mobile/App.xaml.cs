@@ -89,6 +89,7 @@ namespace OpenPKW_Mobile
         {
             ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
             ServiceFactory.ElectionProvider = new OpmElectionProvider();
+            ServiceFactory.StorageProvider = new OpmStorageProvider();
         }
 
         // Code to execute when the application is activated (brought to foreground)

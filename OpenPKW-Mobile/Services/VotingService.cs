@@ -10,31 +10,29 @@ using System.Threading.Tasks;
 
 namespace OpenPKW_Mobile.Services
 {
-    class VotingService : IVotingService
+    partial class VotingService : ServiceBase, IVotingService
     {
-        /// <summary>
-        /// Rodzaj wykonywanej operacji.
-        /// </summary>
-        enum WorkType { FetchCandidates, SendResults }
-   
         /// <summary>
         /// Zestaw danych przekazywanych pomiędzy wątkami.
         /// </summary>
         struct WorkerData
         {
             public IElectionProvider ElectionProvider;
-            public ElectionEntity Election; 
+            public ElectionEntity Election;
         }
-       
+
+        WorkerHandle Fetch;
+        WorkerHandle Upload;
+
+        public event Action<CandidateEntity[]> FetchCompleted;
+        public event Action<string> FetchRejected;
+        public event Action UploadCompleted;
+        public event Action<string> UploadRejected;    
+
         /// <summary>
         /// Dostawca usługi głosowania.
         /// </summary>
         private IElectionProvider _provider;
-
-        /// <summary>
-        /// Zarządza zadaniami w tle.
-        /// </summary>
-        private BackgroundWorkerEx<WorkType> _worker;
 
         /// <summary>
         /// Konstruktor klasy.
@@ -45,48 +43,43 @@ namespace OpenPKW_Mobile.Services
             this._provider = provider;
         }
 
-        /// <summary>
-        /// Obsługa wyniku procedury logowania.
-        /// </summary>
-        /// <param name="sender">Nadawca zdarzenia.</param>
-        /// <param name="e">Wyniki przetwarzania.</param>
-        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        void IVotingService.BeginFetch()
         {
-            var worker = (BackgroundWorkerEx<WorkType>)sender;
-            if (e.Error != null)
+            IElectionProvider provider = this._provider;
+            WorkerContext context = new WorkerContext()
             {
-                // poinformowanie słuchaczy o problemie
-                switch(worker.Type)
+                DoWork = fetchProcess,
+                RunWorkerCompleted = fetchCompleted,
+                UserData = new WorkerData()
                 {
-                    case WorkType.FetchCandidates:
-                        if (FetchRejected != null)
-                            FetchRejected(e.Error.Message);
-                        break;
-                    case WorkType.SendResults:
-                        if (SendRejected != null)
-                            SendRejected(e.Error.Message);
-                        break;
+                    ElectionProvider = provider
                 }
-            }
-            else
-            {
-                // poinformowanie słuchaczy o poprawnym wyniku logowania
-                // od tego momentu użytkownik jest identyfikowany poprzez obiekt typu [UserEntity]
-                switch (worker.Type)
-                {
-                    case WorkType.FetchCandidates:
-                        CandidateEntity[] candidates = (CandidateEntity[])e.Result;
-                        if (FetchCompleted != null)
-                            FetchCompleted(candidates);
-                        break;
-                    case WorkType.SendResults:
-                        if (SendCompleted != null)
-                            SendCompleted();
-                        break;
-                }
-            }
+            };
 
-            this._worker = null;
+            Fetch = Begin(context);
+
+            // tutaj cały czas trwa procedura logowania
+            // ...
+        }
+
+        void IVotingService.BeginUpload(ElectionEntity election)
+        {
+            IElectionProvider provider = this._provider;
+            WorkerContext context = new WorkerContext()
+            {
+                DoWork = uploadProcess,
+                RunWorkerCompleted = uploadCompleted,
+                UserData = new WorkerData()
+                {
+                    ElectionProvider = provider,
+                    Election = election
+                }
+            };
+
+            Upload = Begin(context);
+
+            // tutaj cały czas trwa procedura logowania
+            // ...
         }
 
         /// <summary>
@@ -97,7 +90,7 @@ namespace OpenPKW_Mobile.Services
         private void fetchProcess(object sender, DoWorkEventArgs e)
         {
             var provider = ((WorkerData)e.Argument).ElectionProvider;
-        
+
             CandidateEntity[] candidates = provider.GetCandidates();
             if (candidates == null)
             {
@@ -108,12 +101,28 @@ namespace OpenPKW_Mobile.Services
             e.Result = candidates;
         }
 
+        private void fetchCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                // poinformowanie słuchaczy o problemie
+                if (FetchRejected != null)
+                    FetchRejected(e.Error.Message);
+            }
+            else
+            {
+                CandidateEntity[] candidates = (CandidateEntity[])e.Result;
+                if (FetchCompleted != null)
+                    FetchCompleted(candidates);
+            }
+        }
+
         /// <summary>
         /// Procedura wysyłania wyników wyborów.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void sendProcess(object sender, DoWorkEventArgs e)
+        private void uploadProcess(object sender, DoWorkEventArgs e)
         {
             var provider = ((WorkerData)e.Argument).ElectionProvider;
             var election = ((WorkerData)e.Argument).Election;
@@ -128,65 +137,21 @@ namespace OpenPKW_Mobile.Services
             e.Result = result;
         }
 
-        #region Implementacja IVotingService
-        public event Action<CandidateEntity[]> FetchCompleted;
-        public event Action<string> FetchRejected;
-        public event Action SendCompleted;
-        public event Action<string> SendRejected;
-
-        void IVotingService.BeginFetchCandidates()
+        private void uploadCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            IElectionProvider provider = this._provider;
-
-            if (this._worker != null)
-                throw new Exception();
-
-            // przygotowanie usługi do pracy w tle
-            var worker = new BackgroundWorkerEx<WorkType>(WorkType.FetchCandidates);
-            worker.DoWork += fetchProcess;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-
-            WorkerData data = new WorkerData()
+            if (e.Error != null)
             {
-                ElectionProvider = provider
-            };
-
-            // uruchomienie procedury logowania w osobnym wątku
-            worker.RunWorkerAsync(data);
-
-            this._worker = worker;
-
-            // tutaj cały czas trwa procedura logowania
-            // ...
+                // poinformowanie słuchaczy o problemie
+                if (UploadRejected != null)
+                    UploadRejected(e.Error.Message);
+            }
+            else
+            {
+                if (UploadCompleted != null)
+                    UploadCompleted();
+            }
         }
 
-        void IVotingService.BeginSendResults(ElectionEntity election)
-        {
-            IElectionProvider provider = this._provider;
-
-            if (this._worker != null)
-                throw new Exception();
-
-            // przygotowanie usługi do pracy w tle
-            var worker = new BackgroundWorkerEx<WorkType>(WorkType.SendResults);
-            worker.DoWork += sendProcess;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-
-            WorkerData data = new WorkerData()
-            {
-                ElectionProvider = provider,
-                Election = election
-            };
-
-            // uruchomienie procedury logowania w osobnym wątku
-            worker.RunWorkerAsync(data);
-
-            this._worker = worker;
-
-            // tutaj cały czas trwa procedura logowania
-            // ...
-        }
-        #endregion
 
     }
 }

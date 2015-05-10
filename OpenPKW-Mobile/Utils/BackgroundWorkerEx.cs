@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OpenPKW_Mobile.Utils
 {
+    /*
     /// <summary>
     /// Obsługuje zadanie wykonywane w tle.
     /// Przechowuje typ wartości wyliczanej.
@@ -25,6 +26,16 @@ namespace OpenPKW_Mobile.Utils
             }
 
             this.Type = type;
+        }
+    }
+    */
+    class BackgroundWorkerEx<T> : BackgroundWorker
+    {
+        public readonly T Object;
+
+        public BackgroundWorkerEx(T obj)
+        {
+            this.Object = obj;
         }
     }
 }

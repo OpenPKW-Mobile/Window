@@ -9,5 +9,5 @@ namespace OpenPKW_Mobile
     /// <summary>
     /// Stan strony.
     /// </summary>
-    public enum PageState { None, Fail, Edit, Error, Ready }
+    public enum PageState { None, Fail, Edit, Error, Ready, Wait }
 }

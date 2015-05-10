@@ -24,12 +24,14 @@
         <local:ArrayToVisibilityConverter x:Key="converter3"/>
         <local:PageStateToColorConverter x:Key="converter4"/>
         <local:PageStateToVisibilityConverter x:Key="converter5"/>
+        <local:ObjectToVisibilityConverter x:Key="converter6"/>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid>    
         
         <!-- okno modalne z kółkiem postępu, wyświetlane w momencie blokowania strony -->
-        <Grid x:Name="layoutWait" Visibility="Collapsed" Canvas.ZIndex="1" HorizontalAlignment="Stretch">
+        <Grid x:Name="layoutWait" Canvas.ZIndex="1" HorizontalAlignment="Stretch"
+              Visibility="{Binding Path=PageState, Converter={StaticResource converter5}, ConverterParameter=Wait}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -194,20 +196,23 @@
                     </phone:LongListSelector>
                                
                     <!-- panel z komunikatami dla użytkownika -->
-                    <StackPanel x:Name="panelWarning" Margin="2" Grid.Row="1">
+                    <StackPanel x:Name="panelWarning" Margin="2" Grid.Row="1"
+                                Visibility="{Binding Path=Message, Converter={StaticResource converter6}}">
                         <Border BorderThickness="2" Background="LightGray" Padding="20" Margin="0,10,0,0"
                             BorderBrush="{Binding Path=PageState, Converter={StaticResource converter4}}"> 
-                            <TextBlock x:Name="labelMessage" Text="[tutaj będzie treść komunikatu]" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
-                                   FontSize="{StaticResource PhoneFontSizeSmall}" />
+                            <TextBlock x:Name="labelMessage" 
+                                       Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+                                       Text="{Binding Message}" 
+                                       FontSize="{StaticResource PhoneFontSizeSmall}" />
                         </Border>
                     </StackPanel>
 
                     <!-- przyciski do nawigacji pomiędzy stronami -->
                     <Button x:Name="buttonNext" Content="DALEJ"  Margin="2,0,-2,0" Height="85" Click="buttonNext_Click"
-                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}}"/>
+                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}, ConverterParameter=Ready}"/>
                     <Button x:Name="buttonSkip" Content="POMIŃ"  Margin="2,0,-2,0" Height="85" Click="buttonSkip_Click"
                             Background="{StaticResource ComplementaryColor}"
-                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}, ConverterParameter=invert}"/>
+                            Visibility="{Binding Path=PageState, Converter={StaticResource converter5}, ConverterParameter=invert|Ready}"/>
                 </StackPanel>
 
             </ScrollViewer>

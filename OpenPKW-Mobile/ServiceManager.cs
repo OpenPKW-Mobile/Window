@@ -74,6 +74,20 @@ namespace OpenPKW_Mobile
         }
 
         /// <summary>
+        /// Udostępnienie serwisu obsługi zdjęć.
+        /// </summary>
+        private IPhotoService _photo = null;
+        public IPhotoService Photo
+        {
+            get
+            {
+                if (_photo == null)
+                    _photo = ServiceFactory.Photo;
+                return _photo;
+            }
+        }
+
+        /// <summary>
         /// Bieżący użytkownik aplikacji.
         /// </summary>
         public UserEntity CurrentUser { get; set; }

@@ -1,4 +1,4 @@
-﻿//#define EMRON
+﻿#define EMRON
 
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,8 @@ namespace OpenPKW_Mobile
         {
             base.OnNavigatedTo(e);
 
-            NavigationService.Navigate(new Uri("/PreviewDataPage.xaml", UriKind.Relative));
+            //          NavigationService.Navigate(new Uri("/UploadDataPage.xaml", UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));
             
         }
 #endif

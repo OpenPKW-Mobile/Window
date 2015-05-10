@@ -84,42 +84,18 @@ namespace OpenPKW_Mobile
         /// <summary>
         /// Informacja dla użytkownika o błędzie logowania.
         /// Wyświetla się na dole strony.
-        /// </summary>
-        protected string Message
+        /// </summary>  
+        private string _message = null;
+        public string Message
         {
             get
             {
-                return labelMessage.Text;
+                return this._message;
             }
             set
             {
-                if (value == null)
-                {
-                    panelWarning.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    labelMessage.Text = value;
-                    panelWarning.Visibility = Visibility.Visible;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Określa, czy strona jest zablokowana do edycji.
-        /// Blokowanie edycji następuje w momencie komunikacji z serwerem.
-        /// </summary>
-        private bool _locked = false;
-        protected bool Locked
-        {
-            get
-            {
-                return this._locked;
-            }
-            set
-            {
-                layoutWait.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-                this._locked = value;
+                this._message = value;
+                OnPropertyChanged("Message");
             }
         }
 
@@ -205,9 +181,6 @@ namespace OpenPKW_Mobile
         /// <param name="e"></param>
         private void buttonSkip_Click(object sender, RoutedEventArgs e)
         {
-            CandidateModel[] models = null;
-            IEnumerable<object> x = models.AsEnumerable();
-
             MessageBoxEx messageBox = new MessageBoxEx()
             {
                 Caption = "Chcesz pominąć wprowadzanie danych ?",
@@ -218,9 +191,7 @@ namespace OpenPKW_Mobile
             };
             messageBox.LeftButtonPressed += delegate
             {
-                //MessageBox.Show("Wykonanie zdjęć protokołów", "Zmiana strony", MessageBoxButton.OK);
                 navigateToTakePhotoPage();
-                // TODO
             };
             messageBox.Show();
         }
@@ -247,15 +218,15 @@ namespace OpenPKW_Mobile
 
             try
             {
-                Locked = true;
+                PageState = PageState.Wait;
 
                 // rozpoczęcie procedury logowania użytkownika w tle
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
-                service.BeginFetchCandidates();
+                service.BeginFetch();
             }
             catch (LoginException ex)
             {
-                Locked = false;
+                PageState = PageState.Fail;
                 Message = ex.Message;
             }
 
@@ -273,8 +244,8 @@ namespace OpenPKW_Mobile
         /// <param name="message"></param>
         void service_FetchRejected(string message)
         {
-            Locked = false;
-            Message = getUserMessage(PageState = PageState.Fail) ?? message;
+            PageState = PageState.Fail;
+            Message = getUserMessage(PageState) ?? message;
             
             Candidates = new CandidateModel[0];
         }
@@ -285,7 +256,7 @@ namespace OpenPKW_Mobile
         /// <param name="user"></param>
         void service_FetchCompleted(CandidateEntity[] candidates)
         {
-            Locked = false;
+            PageState = PageState.Edit;
             Message = null;
             
             if (candidates == null)

@@ -21,6 +21,11 @@ namespace OpenPKW_Mobile
         public static IElectionProvider ElectionProvider;
 
         /// <summary>
+        /// Dostawca usługi głosowania.
+        /// </summary>
+        public static IStorageProvider StorageProvider;
+
+        /// <summary>
         /// Tworzy nową usługę logowania.
         /// </summary>
         public static LoginService Login
@@ -50,6 +55,17 @@ namespace OpenPKW_Mobile
             get
             {
                 return new VotingService(ElectionProvider);
+            }
+        }
+
+        /// <summary>
+        /// Tworzy nową usługę głosowania.
+        /// </summary>
+        public static PhotoService Photo
+        {
+            get
+            {
+                return new PhotoService(StorageProvider);
             }
         }
 

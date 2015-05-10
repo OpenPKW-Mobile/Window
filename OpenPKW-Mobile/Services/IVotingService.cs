@@ -22,24 +22,24 @@ namespace OpenPKW_Mobile.Services
         /// <summary>
         /// Zdarzenie informujące o poprawnym wysłaniu wyników wyyborów.
         /// </summary>
-        event Action SendCompleted;
+        event Action UploadCompleted;
 
         /// <summary>
         /// Zdarzenie informujące o nieudanych wysłaniu wyników wyborów.
         /// </summary>
-        event Action<string> SendRejected;
+        event Action<string> UploadRejected;
 
         /// <summary>
         /// Rozpoczęcie procedury pobierania danych kandydatów.
         /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
         /// </summary>
-        void BeginFetchCandidates();
+        void BeginFetch();
 
         /// <summary>
         /// Rozpoczęcie procedury wysyłania wyników wyborów.
         /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
         /// </summary>
         /// <param name="election">Wyniki wyborów.</param>
-        void BeginSendResults(ElectionEntity election);
+        void BeginUpload(ElectionEntity election);
     }
 }

@@ -17,7 +17,7 @@ namespace OpenPKW_Mobile
     /// Konwersja stanu strony na widoczność elementu.
     /// Dodatkowy parametr umożliwia zmianę funkcjonowania:
     /// - invert : negacja widoczności 
-    /// </summary>
+    /// </summary>  
     public class PageStateToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -26,10 +26,12 @@ namespace OpenPKW_Mobile
                 return null;
 
             PageState state = (PageState)value;
-            bool invert = (parameter != null) ? (string)parameter == "invert" : false;
-            bool visible = (state == PageState.Ready) ^ invert;
 
-            return visible ? Visibility.Visible : Visibility.Collapsed;
+            string[] parameters = (parameter != null) ? ((string)parameter).Split('|') : new string[0];
+            bool invert = parameters.Contains("invert");
+            bool valid = parameters.Contains(state.ToString());
+
+            return valid ^ invert  ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -150,6 +152,44 @@ namespace OpenPKW_Mobile
 
             IEnumerable<object> items = (IEnumerable<object>)value;
             return (items.Count() == 0) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ObjectToIntegerConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null)
+                return default(int);
+            
+            try
+            {                
+                return value.GetHashCode();
+            }
+            catch
+            {
+                return default(int);
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ObjectToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value == null)
+                return Visibility.Collapsed;
+            else return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

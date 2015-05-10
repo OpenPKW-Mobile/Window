@@ -1,0 +1,131 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="OpenPKW_Mobile.UploadDataPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mock="clr-namespace:OpenPKW_Mobile.Mocks"    
+    xmlns:controls="clr-namespace:OpenPKW_Mobile.Controls;assembly=OpenPKW-Mobile.Controls"
+    xmlns:local="clr-namespace:OpenPKW_Mobile"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <phone:PhoneApplicationPage.Resources>
+        <local:PageStateToColorConverter x:Key="converter1"/>
+        <local:PageStateToVisibilityConverter x:Key="converter2"/>
+        <local:ObjectToIntegerConverter x:Key="converter3"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid>        
+    <!-- okno modalne z kółkiem postępu, wyświetlane w momencie blokowania strony -->
+        <Grid x:Name="layoutWait" Canvas.ZIndex="1" HorizontalAlignment="Stretch"
+              Visibility="{Binding Path=PageState, Converter={StaticResource converter2}, ConverterParameter=Wait}"
+              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=mock:DesignUploadModel}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="Black" Opacity="0.8" Grid.RowSpan="5"/>
+            <StackPanel Grid.Row="1">
+                <controls:ProgressRing IsActive="True" Height="100" Width="100" Foreground="{StaticResource DistinctColor}" />
+                <TextBlock Text="Proszę czekać" HorizontalAlignment="Center" Foreground="White" Margin="0,20,0,20"/>
+                <ProgressBar Height="20" Margin="20,20,20,0" 
+                             Foreground="{StaticResource DistinctColor}" 
+                             Value="{Binding Path=Progress, Mode=OneWay, Converter={StaticResource converter3}}"/>
+                <TextBlock HorizontalAlignment="Center" Foreground="White"
+                           Text="{Binding Path=Progress}" />
+            </StackPanel>
+        </Grid>
+        
+        <!--LayoutRoot is the root grid where all page content is placed-->
+        <Grid x:Name="LayoutRoot" Canvas.ZIndex="0"
+              Background="{StaticResource BackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- dane aktualnej komisji wyborczej -->
+            <Grid x:Name="gridCommission" 
+					DataContext="{Binding Commission}"
+					d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=mock:DesignCommissionEntity}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+						Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <TextBlock x:Name="labelCommisionType" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+							Text="{Binding Type}"
+							FontSize="{StaticResource PhoneFontSizeSmall}" />
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+						Grid.Row="1" Grid.Column="0">
+                    <TextBlock x:Name="labelCommissionTitle" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+							Text="{Binding Title}" 
+							FontSize="{StaticResource PhoneFontSizeSmall}" />
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="LightGray" Margin="2"
+						Grid.Row="1" Grid.Column="1">
+                    <TextBlock x:Name="labelCommissionIdentifier" Margin="5" Foreground="Black" TextWrapping="Wrap" TextAlignment="Center"
+							Text="{Binding Id}" 
+							FontSize="{StaticResource PhoneFontSizeSmall}" />
+                </Border>
+            </Grid>
+
+            <!--ContentPanel - place additional content here-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="20,0,20,0"
+				  d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=mock:DesignUploadModel}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="labelMessage" Grid.Row="0" HorizontalAlignment="Center" Margin="5,20,5,20" TextWrapping="Wrap" TextAlignment="Center"
+                           Text="{Binding Path=Message}"/>
+                <Image Grid.Row="1" Height="250" VerticalAlignment="Center" 
+                       Source="/Assets/logo.png" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="labelInfo" Grid.Row="2" HorizontalAlignment="Center" Margin="5,20,5,20" TextWrapping="Wrap" TextAlignment="Center"
+                           Text="{Binding Path=Information}"/>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonRetry" Content="POWTÓRZ" Margin="2,0,-2,0" Height="85" 
+                        Background="{StaticResource ComplementaryColor}"
+                        Visibility="{Binding Path=PageState, Converter={StaticResource converter2}, ConverterParameter=invert|Ready}" 
+                        Click="buttonRetry_Click"/>
+                <Button Grid.Column="1" x:Name="buttonClose" Content="ZAMKNIJ" Margin="2,0,-2,0" Height="85" Click="buttonClose_Click"/>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

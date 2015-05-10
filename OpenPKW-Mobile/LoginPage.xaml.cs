@@ -9,50 +9,44 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using OpenPKW_Mobile.Services;
 using OpenPKW_Mobile.Entities;
+using System.ComponentModel;
 
 namespace OpenPKW_Mobile
 {
-    public partial class LoginPage : PhoneApplicationPage
+    public partial class LoginPage : PhoneApplicationPage, INotifyPropertyChanged
     {
         /// <summary>
-        /// Informacja dla użytkownika o błędzie logowania.
-        /// Wyświetla się na dole strony.
+        /// Stan strony.
         /// </summary>
-        protected string Message 
-        { 
+        private PageState _state = default(PageState);
+        public PageState PageState
+        {
             get
             {
-                return labelMessage.Text;
+                return this._state;
             }
             set
             {
-                if (value == null)
-                {
-                    panelWarning.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    labelMessage.Text = value;
-                    panelWarning.Visibility = Visibility.Visible;
-                }
+                this._state = value;
+                OnPropertyChanged("PageState");
             }
         }
 
         /// <summary>
-        /// Określa, czy strona jest zablokowana do edycji.
-        /// Blokowanie edycji następuje w momencie komunikacji z serwerem.
+        /// Informacja dla użytkownika o błędzie logowania.
+        /// Wyświetla się na dole strony.
         /// </summary>
-        private bool _locked = false;
-        protected bool Locked 
+        private string _message = null;
+        public string Message
         {
             get
             {
-                return this._locked;
+                return this._message;
             }
             set
             {
-                layoutWait.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-                this._locked = value;
+                this._message = value;
+                OnPropertyChanged("Message");
             }
         }
 
@@ -65,7 +59,7 @@ namespace OpenPKW_Mobile
 
             // ukrycie elementów, które nie powinny być początkowo widoczne,
             // a zostały dodane do formatki w celach projektowych
-            panelWarning.Visibility = Visibility.Collapsed;
+            //panelWarning.Visibility = Visibility.Collapsed;
 
 #if !DEBUG
             // ukrycie funkcjonalności nie posiadających implementacji
@@ -87,7 +81,7 @@ namespace OpenPKW_Mobile
         /// <param name="message"></param>
         void service_LoginRejected(string message)
         {
-            Locked = false;
+            PageState = PageState.Error;
             Message = message;
         }
 
@@ -97,7 +91,7 @@ namespace OpenPKW_Mobile
         /// <param name="user"></param>
         void service_LoginCompleted(UserEntity user)
         {
-            Locked = false;
+            PageState = PageState.Ready;
 
             // należy zapamiętać bieżącego użytkownika
             // będzie on używany przy komunikacji z pozostałymi serwisami (token)
@@ -124,7 +118,8 @@ namespace OpenPKW_Mobile
             
             try
             {
-                Locked = true;
+                PageState = PageState.Wait;
+                Message = null;
 
                 // rozpoczęcie procedury logowania użytkownika w tle
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
@@ -132,7 +127,7 @@ namespace OpenPKW_Mobile
             }
             catch(LoginException ex)
             {
-                Locked = false;
+                PageState = PageState.Fail;
                 Message = ex.Message;                
             }
 
@@ -169,7 +164,8 @@ namespace OpenPKW_Mobile
 
             try
             {
-                Locked = true;
+                PageState = PageState.Wait;
+                Message = null;
 
                 // rozpoczęcie procedury logowania użytkownika w tle
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
@@ -177,7 +173,7 @@ namespace OpenPKW_Mobile
             }
             catch (LoginException ex)
             {
-                Locked = false;
+                PageState = PageState.Fail;
                 Message = ex.Message;
             }
 
@@ -185,5 +181,18 @@ namespace OpenPKW_Mobile
             // ...
         }
         #endregion
+
+        #region Implementacja INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion Implementacja INotifyPropertyChanged
     }
 }

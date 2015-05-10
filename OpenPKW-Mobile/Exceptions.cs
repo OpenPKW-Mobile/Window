@@ -71,8 +71,6 @@ namespace OpenPKW_Mobile
             };
         }
 
-
-
         public override string Message
         {
             get
@@ -117,5 +115,37 @@ namespace OpenPKW_Mobile
         }
     }
 
+    /// <summary>
+    /// Rodzaj wyjątku używany w procesie przesyłania zdjęć protokołów.
+    /// </summary>
+    public class PhotoException : ApplicationException
+    {
+        public enum ErrorReason
+        {
+            InvalidBitmap,
+            CannotUploadFile
+        }
+
+        private ErrorReason _reason;
+        private Dictionary<ErrorReason, string> _messages;
+
+        public PhotoException(ErrorReason reason)
+        {
+            this._reason = reason;
+            this._messages = new Dictionary<ErrorReason, string>()
+            {
+                { ErrorReason.InvalidBitmap, "Można przesłać do zewnętrznego magazynu wyłącznie zdjęcia." },
+                { ErrorReason.CannotUploadFile, "Teraz nie można wysłać zdjęcia protokołu. Poczekaj chwilę i spróbuj ponownie." },
+            };
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return this._messages[_reason];
+            }
+        }
+    }
 
 }
