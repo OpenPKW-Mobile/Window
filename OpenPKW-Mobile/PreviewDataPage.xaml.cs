@@ -79,9 +79,7 @@ namespace OpenPKW_Mobile
         /// <param name="e"></param>
         private void buttonSend_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Wysyłanie danych", "Zmiana strony", MessageBoxButton.OK);
-
-            // TODO
+            NavigationService.Navigate(new Uri("/UploadDataPage.xaml", UriKind.Relative));
         }
 
         #endregion Obsługa zdarzeń generowanych przez użytkownika
