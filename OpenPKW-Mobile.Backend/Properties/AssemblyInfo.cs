@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenPKW-Mobile.Services")]
+[assembly: AssemblyTitle("OpenPKW-Mobile.Backend")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("OpenPKW-Mobile.Services")]
+[assembly: AssemblyProduct("OpenPKW-Mobile.Backend")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("91e723b6-ecdc-4bb8-a7dd-609990ba7275")]
+[assembly: Guid("2d3b274c-301b-4e08-888b-4d06d8b711b5")]
 
 // Version information for an assembly consists of the following four values:
 //

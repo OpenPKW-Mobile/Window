@@ -35,4 +35,6 @@
 /OpenPKW-Mobile/OpenPKW-Mobile.csproj.user
 /OpenPKW-Mobile.Services/obj/Debug
 /OpenPKW-Mobile.Services.Host/obj/Debug
-/tmobile_20140218.rar
+
+/OpenPKW-Mobile.Backend/bin/Debug
+/OpenPKW-Mobile.Backend/obj/Debug
