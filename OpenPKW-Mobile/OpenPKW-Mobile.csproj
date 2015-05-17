@@ -131,6 +131,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\DevAuthenticationProvider.cs" />
+    <Compile Include="Providers\DevElectionProvider.cs" />
+    <Compile Include="Providers\OurStorageProvider.cs" />
+    <Compile Include="Providers\DevStorageProvider.cs" />
     <Compile Include="Providers\IAuthenticationProvider.cs" />
     <Compile Include="Providers\IElectionProvider.cs" />
     <Compile Include="Providers\IStorageProvider.cs" />
@@ -160,6 +163,7 @@
     </Compile>
     <Compile Include="Utils\BackgroundWorkerEx.cs" />
     <Compile Include="Utils\DictionaryEx.cs" />
+    <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\Range.cs" />
     <Compile Include="TakePhotoPage.xaml.cs">
       <DependentUpon>TakePhotoPage.xaml</DependentUpon>

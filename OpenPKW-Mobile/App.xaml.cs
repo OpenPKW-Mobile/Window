@@ -87,9 +87,17 @@ namespace OpenPKW_Mobile
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+#if DEBUG
             ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
             ServiceFactory.ElectionProvider = new OpmElectionProvider();
-            ServiceFactory.StorageProvider = new OpmStorageProvider();
+///            ServiceFactory.StorageProvider = new OpmStorageProvider();
+///            ServiceFactory.StorageProvider = new DevStorageProvider();
+            ServiceFactory.StorageProvider = new OurStorageProvider();
+#else
+            ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
+            ServiceFactory.ElectionProvider = new OpmElectionProvider();
+            ServiceFactory.StorageProvider = new OurStorageProvider();
+#endif
         }
 
         // Code to execute when the application is activated (brought to foreground)

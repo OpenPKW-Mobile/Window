@@ -106,8 +106,6 @@ namespace OpenPKW_Mobile
         {
             InitializeComponent();
 
-            // podpięcie się pod zdarzenia z serwisu logowania
-            // aplikacja będzie mogła reagować w przypadku błędu lub poprawnego uwierzytelniania
             IVotingService service = ServiceManager.Instance.Voting;
             service.FetchCompleted += service_FetchCompleted;
             service.FetchRejected += service_FetchRejected;

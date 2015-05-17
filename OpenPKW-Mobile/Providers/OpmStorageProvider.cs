@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,9 +13,10 @@ namespace OpenPKW_Mobile.Providers
     {
         public event Action<int> ProgressChanged;
 
-        bool IStorageProvider.UploadFile(string name, System.IO.Stream stream)
+        bool IStorageProvider.UploadFile(string commissionID, string fileName, Stream fileStream)
         {
-            var message = String.Format("Czy odebrać plik o nazwie '{0}' ?", name);
+#if DEBUG
+            var message = String.Format("Czy odebrać plik o nazwie '{0}' ?", fileName);
             var result = ShowMessage(message);
 
             if (result == MessageBoxResult.OK)
@@ -34,6 +36,9 @@ namespace OpenPKW_Mobile.Providers
 
             return (result == MessageBoxResult.OK);
         }
-
+#else
+        // TODO
+        return false;
+#endif
     }
 }

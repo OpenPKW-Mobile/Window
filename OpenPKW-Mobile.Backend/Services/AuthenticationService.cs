@@ -9,7 +9,8 @@ using System.Text;
 
 namespace OpenPKW_Mobile.Backend.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class AuthenticationService : ServiceBase, IAuthenticationService
     {       
         public UserDto Login()
         {

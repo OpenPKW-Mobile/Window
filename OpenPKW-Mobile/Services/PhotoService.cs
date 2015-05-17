@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 
 namespace OpenPKW_Mobile.Services
 {
+    /// <summary>
+    /// Usługa przesyłania zdjęcia do zewnętrzego magazynu danych.
+    /// </summary>
     class PhotoService : ServiceBase, IPhotoService
     {
         /// <summary>
@@ -22,6 +25,7 @@ namespace OpenPKW_Mobile.Services
         struct WorkerData
         {
             public IStorageProvider StorageProvider;
+            public CommissionEntity Commission;
             public PhotoEntity Photo;
         }
 
@@ -41,7 +45,7 @@ namespace OpenPKW_Mobile.Services
             this._provider = provider;
         }
 
-        void IPhotoService.BeginUpload(PhotoEntity photo)
+        void IPhotoService.BeginUpload(CommissionEntity commission, PhotoEntity photo)
         {
             IStorageProvider provider = this._provider;
             WorkerContext context = new WorkerContext()
@@ -52,6 +56,7 @@ namespace OpenPKW_Mobile.Services
                 UserData = new WorkerData()
                 {
                     StorageProvider = provider,
+                    Commission = commission,
                     Photo = photo
                 }
             };
@@ -62,12 +67,19 @@ namespace OpenPKW_Mobile.Services
             // ...
         }
 
+        /// <summary>
+        /// Obsługa przesyłania zdjęcia.
+        /// </summary>
+        /// <param name="sender">Nadawca zdarzenia</param>
+        /// <param name="e">Parametry operacji</param>
         private void uploadProcess(object sender, DoWorkEventArgs e)
         {
             var worker = (BackgroundWorker)sender;
             var provider = ((WorkerData)e.Argument).StorageProvider;
+            var commission = ((WorkerData)e.Argument).Commission;
             var photo = ((WorkerData)e.Argument).Photo;
 
+            // trzeba się upewnić, że zostało wskazane zdjęcie do wysłania
             BitmapSource bitmapSource = photo.Image as BitmapSource;
             if (bitmapSource == null)
             {
@@ -75,12 +87,8 @@ namespace OpenPKW_Mobile.Services
                     PhotoException.ErrorReason.InvalidBitmap);
             }
 
-            provider.ProgressChanged += delegate(int percent)
-            {
-                if (worker.IsBusy)
-                    worker.ReportProgress(percent);
-            };
-
+            // podobno wszystkie bitmapy są tworzone w wątku GUI
+            // należy przenieść zawartość zdjęcia do lokalnego wątku
             WriteableBitmap bitmap = null;
             using (AutoResetEvent ev = new AutoResetEvent(false))
             {
@@ -92,11 +100,23 @@ namespace OpenPKW_Mobile.Services
                 ev.WaitOne();
             }
 
+            // raportowanie postępu wysyłania
+            // zdarzenia pochodzą od dostawcy usługi
+            provider.ProgressChanged += delegate(int percent)
+            {
+                if (worker.IsBusy)
+                    worker.ReportProgress(percent);
+            };
+
+            // przesłanie zdjęcia przy pomocy dostawcy usługi
             using (MemoryStream stream = new MemoryStream())
             {
+                // konwersja do formatu JPEG
                 bitmap.SaveJpeg(stream, bitmap.PixelWidth, bitmap.PixelHeight, 0, 100);
 
-                bool result = provider.UploadFile(photo.Name, stream);                
+                // przesłanie zdjęcia
+                // dostawca nie generuje wyjątków; błąd transmisji zwracany jest jako wynik operacji
+                bool result = provider.UploadFile(commission.Id, photo.Name, stream);                
                 if (result == false)
                 {
                     throw new PhotoException(
@@ -105,12 +125,22 @@ namespace OpenPKW_Mobile.Services
             }
         }
 
+        /// <summary>
+        /// Obsługa raportowania postępu operacji.
+        /// </summary>
+        /// <param name="sender">Nadawca zdarzenia</param>
+        /// <param name="e">Postęp operacji</param>
         private void uploadProgress(object sender, ProgressChangedEventArgs e)
         {
             if (UploadProgress != null)
                 UploadProgress(e.ProgressPercentage);
         }
 
+        /// <summary>
+        /// Obsługa wyniku operacji.
+        /// </summary>
+        /// <param name="sender">Nadawca zdarzenia</param>
+        /// <param name="e">Wynik operacji</param>
         private void uploadCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)

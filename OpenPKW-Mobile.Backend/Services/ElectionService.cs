@@ -9,7 +9,8 @@ using System.Text;
 
 namespace OpenPKW_Mobile.Backend.Services
 {
-    public class ElectionService : IElectionService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class ElectionService : ServiceBase, IElectionService
     {
         public CommissionDto GetCommission(string pkwID)
         {

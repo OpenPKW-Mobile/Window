@@ -11,7 +11,6 @@ namespace OpenPKW_Mobile.Providers
     {
         UserEntity IAuthenticationProvider.Authenticate(string userName, string userPassword)
         {
-            
             throw new NotImplementedException();
         }
 

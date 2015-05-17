@@ -16,7 +16,9 @@ namespace OpenPKW_Mobile.Backend
             StringBuilder sb = new StringBuilder();
             IncomingWebRequestContext request = WebOperationContext.Current.IncomingRequest;
             WebHeaderCollection headers = request.Headers;
-            
+
+            sb.AppendLine();
+            sb.AppendLine();
             sb.AppendLine(request.Method + " " + request.UriTemplateMatch.RequestUri.AbsolutePath);
             foreach (string headerName in headers.AllKeys)
             {

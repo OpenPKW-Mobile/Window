@@ -62,6 +62,7 @@
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IElectionService.cs" />
     <Compile Include="Services\IStorageService.cs" />
+    <Compile Include="Services\ServiceBase.cs" />
     <Compile Include="Services\StorageService.cs" />
   </ItemGroup>
   <ItemGroup>
