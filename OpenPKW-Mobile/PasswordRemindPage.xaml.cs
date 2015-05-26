@@ -53,7 +53,7 @@ namespace OpenPKW_Mobile
 
             // podpięcie się pod zdarzenia z serwisu odzyskiwania hasła
             // aplikacja będzie mogła reagować w przypadku błędu lub poprawnego wykonania operacji
-            IRemindService service = ServiceManager.Instance.Remind;
+            ILoginService service = ServiceManager.Instance.Login;
             service.RemindCompleted += service_RemindCompleted;
             service.RemindRejected += service_RemindRejected;
         }
@@ -102,7 +102,7 @@ namespace OpenPKW_Mobile
 
         private void buttonRemind_Click(object sender, RoutedEventArgs e)
         {
-            IRemindService service = ServiceManager.Instance.Remind;
+            ILoginService service = ServiceManager.Instance.Login;
             string userName = textUserName.Text;
             string userEmail = textUserEmail.Text;
 
@@ -114,7 +114,7 @@ namespace OpenPKW_Mobile
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginRemind(userName, userEmail);
             }
-            catch (LoginException ex)
+            catch (LoginService.RemindException ex)
             {
                 Locked = false;
                 Message = ex.Message;

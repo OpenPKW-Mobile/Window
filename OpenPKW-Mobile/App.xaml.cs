@@ -88,15 +88,18 @@ namespace OpenPKW_Mobile
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
 #if DEBUG
-            ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
-            ServiceFactory.ElectionProvider = new OpmElectionProvider();
-///            ServiceFactory.StorageProvider = new OpmStorageProvider();
+///            ServiceFactory.AuthenticationProvider = new DevAuthenticationProvider();
+           ServiceFactory.AuthenticationProvider = new OpwAuthenticationProvider();
+
+///            ServiceFactory.ElectionProvider = new DevElectionProvider();
+            ServiceFactory.ElectionProvider = new OpwElectionProvider();
+
 ///            ServiceFactory.StorageProvider = new DevStorageProvider();
-            ServiceFactory.StorageProvider = new OurStorageProvider();
+            ServiceFactory.StorageProvider = new OpwStorageProvider();
 #else
-            ServiceFactory.AuthenticationProvider = new OpmAuthenticationProvider();
-            ServiceFactory.ElectionProvider = new OpmElectionProvider();
-            ServiceFactory.StorageProvider = new OurStorageProvider();
+            ServiceFactory.AuthenticationProvider = new OpwAuthenticationProvider();
+            ServiceFactory.ElectionProvider = new OpwElectionProvider();
+            ServiceFactory.StorageProvider = new OpwStorageProvider();
 #endif
         }
 

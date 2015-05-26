@@ -54,17 +54,6 @@ namespace OpenPKW_Mobile.Models
         {
             ProtocolPages = new Dictionary<int, IList<ProtocolPage>>();
 #if DEBUG
-            CommissionEntity commission = new CommissionEntity()
-            {
-                Type = "Obwodowa Komisja Wyborcza",
-                Title = "Nr 5 w Łodzi",
-                Id = "106101-5",
-                Place = "Laboratorium Produkcji Ogrodniczej w Zespole Szkół Rzemiosła im. Jana Kilińskiego",
-                Address = "ul. Liściasta 181, 91-220 Łódź"
-            };
-
-            CurrentCommision = commission;
-
             ProtocolPhotos = new List<PhotoEntity>
             {
                 new PhotoEntity()

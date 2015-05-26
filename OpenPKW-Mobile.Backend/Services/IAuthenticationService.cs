@@ -30,6 +30,6 @@ namespace OpenPKW_Mobile.Backend.Services
 
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "register", ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Wrapped)]
-        void Register(string firstname, string lastname, string email);
+        void Register(string firstName, string lastName, string email);
     }   
 }

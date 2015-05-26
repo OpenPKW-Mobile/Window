@@ -20,8 +20,6 @@ namespace OpenPKW_Mobile.Backend.Services
         const string UPLOAD_ACCEPT = "Upload.Accept";
         const string UPLOAD_ERROR = "Upload.Error";
 
-        const string VALUE_NO = "0";
-        const string VALUE_YES = "1";
         const string PATTERN_ALL = ".*";
         const string OUTPUT_DIRECTORY = "./Storage";
 
@@ -214,7 +212,6 @@ namespace OpenPKW_Mobile.Backend.Services
             if (requestID < fileNames.Count)
             {
                 fileName = fileNames[requestID];
-                fileName = fileName + ".jpg";
             }
  
             return fileName;

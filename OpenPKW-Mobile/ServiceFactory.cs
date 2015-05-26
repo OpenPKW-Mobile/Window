@@ -37,17 +37,6 @@ namespace OpenPKW_Mobile
         }
 
         /// <summary>
-        /// Tworzy nową usługę odzyskiwaia hasła.
-        /// </summary>
-        public static RemindService Remind
-        {
-            get
-            {
-                return new RemindService(AuthenticationProvider);
-            }
-        }
-
-        /// <summary>
         /// Tworzy nową usługę głosowania.
         /// </summary>
         public static VotingService Voting

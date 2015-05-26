@@ -46,20 +46,6 @@ namespace OpenPKW_Mobile
         }
 
         /// <summary>
-        /// Udostępnienie serwisu odzyskiwania hasła.
-        /// </summary>
-        private IRemindService _remind = null;
-        public IRemindService Remind
-        {
-            get
-            {
-                if (_remind == null)
-                    _remind = ServiceFactory.Remind;
-                return _remind;
-            }
-        }
-
-        /// <summary>
         /// Udostępnienie serwisu głosowania.
         /// </summary>
         private IVotingService _voting = null;

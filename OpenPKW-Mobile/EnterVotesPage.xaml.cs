@@ -222,7 +222,7 @@ namespace OpenPKW_Mobile
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginFetch();
             }
-            catch (LoginException ex)
+            catch (VotingService.FetchException ex)
             {
                 PageState = PageState.Fail;
                 Message = ex.Message;

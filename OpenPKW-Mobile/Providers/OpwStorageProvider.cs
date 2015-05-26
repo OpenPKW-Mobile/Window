@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OpenPKW_Mobile.Providers
 {
-    class OurStorageProvider : ProviderBase, IStorageProvider
+    class OpwStorageProvider : ProviderBase, IStorageProvider
     {
         const string URI_PREPARE = "http://openpkw.nazwa.pl/api/image-metadata.php";
         

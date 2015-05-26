@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using OpenPKW_Mobile.Models;
+using OpenPKW_Mobile.Entities;
 
 namespace OpenPKW_Mobile
 {
@@ -133,6 +134,19 @@ namespace OpenPKW_Mobile
         {
             App.CurrentAppData.SelectedCommisions = listBoxCommissions.SelectedItems.Cast<ElectoralCommission>();
             //MessageBox.Show("Wybrano pozycji: " + App.CurrentAppData.SelectedCommisions.Count());
+
+#if DEBUG
+            CommissionEntity commission = new CommissionEntity()
+            {
+                Type = "Obwodowa Komisja Wyborcza",
+                Title = "Nr 5 w Łodzi",
+                Id = "106101-5",
+                Place = "Laboratorium Produkcji Ogrodniczej w Zespole Szkół Rzemiosła im. Jana Kilińskiego",
+                Address = "ul. Liściasta 181, 91-220 Łódź"
+            };
+
+            App.CurrentAppData.CurrentCommision = commission;
+#endif
 
             NavigationService.Navigate(new Uri("/EnterVotesPage.xaml", UriKind.Relative));                        
         }

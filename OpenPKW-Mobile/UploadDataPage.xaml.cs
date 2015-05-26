@@ -164,6 +164,10 @@ namespace OpenPKW_Mobile
             servicePhoto.UploadProgress += servicePhoto_UploadProgress;
             servicePhoto.UploadCompleted += servicePhoto_UploadCompleted;
             servicePhoto.UploadRejected += servicePhoto_UploadRejected;
+
+            ILoginService serviceLogin = ServiceManager.Instance.Login;
+            serviceLogin.LogoutCompleted += serviceLogin_LogoutCompleted;
+            serviceLogin.LogoutRejected += serviceLogin_LogoutRejected;
         }
 
         /// <summary>
@@ -211,7 +215,7 @@ namespace OpenPKW_Mobile
                     Progress = new ProgressData(Progress.Value, entity.Name);
                 }
             }
-            catch (LoginException ex)
+            catch (PhotoService.UploadException ex)
             {
                 PageState = PageState.Fail;
                 Message = ex.Message;
@@ -238,11 +242,31 @@ namespace OpenPKW_Mobile
                 RightButtonContent = "Nie",
                 Style = (Style)Application.Current.Resources["MessageBoxExStyle"],
             };
-            messageBox.LeftButtonPressed += delegate
-            {
-                App.Current.Terminate();
-            };
+            messageBox.LeftButtonPressed += buttonClose_Confirmed;
             messageBox.Show();
+        }
+
+        /// <summary>
+        /// Obsługa zamknięcia aplikacji (potwierdzona przez użytkownika).
+        /// </summary>
+        private void buttonClose_Confirmed()
+        {
+            ILoginService service = ServiceManager.Instance.Login;
+            UserEntity user = ServiceManager.Instance.CurrentUser;
+
+            try
+            {
+                PageState = PageState.Wait;
+                Message = null;
+                Information = null;
+
+                service.BeginLogout(user);
+            }
+            catch (LoginService.LogoutException ex)
+            {
+                PageState = PageState.Fail;
+                Message = ex.Message;
+            }
         }
 
         /// <summary>
@@ -276,6 +300,8 @@ namespace OpenPKW_Mobile
         /// </summary>
         private void serviceVoting_UploadCompleted()
         {
+            Progress = getProgressData(Queue, 100, Progress.Text);
+
             Queue.Dequeue();
             UploadNext();
         }
@@ -285,6 +311,8 @@ namespace OpenPKW_Mobile
         /// </summary>
         private void servicePhoto_UploadCompleted()
         {
+            Progress = getProgressData(Queue, 100, Progress.Text);
+            
             Queue.Dequeue();
             UploadNext();
         }
@@ -317,10 +345,19 @@ namespace OpenPKW_Mobile
         /// <param name="value"></param>
         void servicePhoto_UploadProgress(int value)
         {
-            value = (int)((100.0 * (Queue.InitialCount - Queue.Count) + value) / Queue.InitialCount);
-            value = Math.Max(0, Math.Min(100, value));
+            Progress = getProgressData(Queue, value, Progress.Text);
+        }
 
-            Progress = new ProgressData(value, Progress.Text);
+        void serviceLogin_LogoutRejected(string message)
+        {
+            PageState = PageState.Error;
+            Message = getUserMessage(PageState) ?? message;
+            Information = getUserInformation(PageState);
+        }
+
+        void serviceLogin_LogoutCompleted()
+        {
+            App.Current.Terminate();
         }
 
         #endregion Obsługa zdarzeń z serwisu
@@ -346,10 +383,23 @@ namespace OpenPKW_Mobile
         /// <returns></returns>
         private UploadQueue prepareQueue()
         {
+            var election = App.CurrentAppData.Election;
+            var photos = App.CurrentAppData.ProtocolPhotos;
+
             List<object> items = new List<object>();
-            //            items.Add(App.CurrentAppData.Election);
-            foreach (var photo in App.CurrentAppData.ProtocolPhotos)
-                items.Add(photo);
+
+            // wyniki głosowania wysyłane są jako pierwsze
+            if (election != null)
+            {
+                items.Add(election);
+            }
+
+            // dodanie wszystkich zdjęć protokołów wyborczych
+            if (photos != null)
+            {
+                foreach (var photo in photos)
+                    items.Add(photo);
+            }
 
             return new UploadQueue(items);
         }
@@ -394,6 +444,14 @@ namespace OpenPKW_Mobile
             }
 
             return message;
+        }
+
+        private ProgressData getProgressData(UploadQueue queue, int value, string text)
+        {
+            value = (int)((100.0 * (queue.InitialCount - queue.Count) + value) / queue.InitialCount);
+            value = Math.Max(0, Math.Min(100, value));
+
+            return new ProgressData(value, text);
         }
 
         #endregion Funkcje pomocnicze

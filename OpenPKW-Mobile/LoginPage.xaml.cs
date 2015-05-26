@@ -125,7 +125,7 @@ namespace OpenPKW_Mobile
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginLogin(userName, userPassword);
             }
-            catch(LoginException ex)
+            catch(LoginService.LoginException ex)
             {
                 PageState = PageState.Fail;
                 Message = ex.Message;                
@@ -171,7 +171,7 @@ namespace OpenPKW_Mobile
                 // koniec procedury jest sygnalizowany poprzez zdarzenia
                 service.BeginLogin(userName, userPassword);
             }
-            catch (LoginException ex)
+            catch (LoginService.LoginException ex)
             {
                 PageState = PageState.Fail;
                 Message = ex.Message;

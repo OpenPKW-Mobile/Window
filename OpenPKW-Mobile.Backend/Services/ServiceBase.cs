@@ -10,6 +10,10 @@ namespace OpenPKW_Mobile.Backend.Services
 {
     public abstract class ServiceBase
     {
+        protected const string VALUE_NO = "0";
+        protected const string VALUE_YES = "1";
+        protected const string SESSION_TOKEN = "0123456789";
+
         StringDictionary _params = new StringDictionary();
 
         /// <summary>

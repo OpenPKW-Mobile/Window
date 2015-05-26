@@ -20,6 +20,26 @@ namespace OpenPKW_Mobile.Services
         event Action<string> LoginRejected;
 
         /// <summary>
+        /// Zdarzenie informujące o poprawnym zamknięciu sesji użytkownika.
+        /// </summary>
+        event Action LogoutCompleted;
+
+        /// <summary>
+        /// Zdarzenie informujące o błedzie podczas zamykania sesji użytkownika.
+        /// </summary>
+        event Action<string> LogoutRejected;
+
+        /// <summary>
+        /// Zdarzenie informujące o poprawej zmianie hasłą
+        /// </summary>
+        event Action<string> RemindCompleted;
+
+        /// <summary>
+        /// Zdarzenie informujące o błedzie podczas zmiany hasła
+        /// </summary>
+        event Action<string> RemindRejected;
+       
+        /// <summary>
         /// Rozpoczęcie procedury uwierzytelniania.
         /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
         /// </summary>
@@ -27,5 +47,19 @@ namespace OpenPKW_Mobile.Services
         /// <param name="userPassword">Hasło użytkownika.</param>
         void BeginLogin(string userName, string userPassword);
 
+        /// <summary>
+        /// Rozpoczęcie procedury zamykania sesji użytkownika.
+        /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
+        /// </summary>
+        /// <param name="user"></param>
+        void BeginLogout(UserEntity user);
+
+        /// <summary>
+        /// Rozpoczęcie procedury odzyskiwanie hasła.
+        /// Procedura jest wykonywana w tle, a jej wynik zgłaszany poprzez zdarzenia.
+        /// </summary>
+        /// <param name="userName">Nazwa użytkownika.</param>
+        /// <param name="userEmail">E-mail użytkownika.</param>        
+        void BeginRemind(string userName, string userEmail);
     }
 }

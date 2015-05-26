@@ -14,6 +14,11 @@ namespace OpenPKW_Mobile.Entities
         public string UserID { get; set; }
 
         /// <summary>
+        /// Nazwa konta użytkownika.
+        /// </summary>
+        public string LoginName { get; set; }
+
+        /// <summary>
         /// Imię.
         /// </summary>
         public string FirstName { get; set; }

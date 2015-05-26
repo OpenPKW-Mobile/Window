@@ -9,12 +9,16 @@ using System.Windows;
 
 namespace OpenPKW_Mobile.Providers
 {
-    class OpmElectionProvider : ProviderBase, IElectionProvider
-    {
-        CandidateEntity[] IElectionProvider.GetCandidates()
+    class SymElectionProvider : ProviderBase, IElectionProvider
+    {     
+        CommissionEntity IElectionProvider.GetCommission(UserEntity user, string commissionID)
         {
-#if DEBUG
-            var message = "Czy wysłać listę kandydatów w wyborach ?"; 
+            throw new NotImplementedException();
+        }
+
+        CandidateEntity[] IElectionProvider.GetCandidates(UserEntity user, CommissionEntity commission)
+        {
+            var message = "Czy wysłać listę kandydatów w wyborach ?";
             var result = ShowMessage(message);
 
             // symuluje opóżnienia w komunikacji z zewnętrzną usługą
@@ -56,26 +60,17 @@ namespace OpenPKW_Mobile.Providers
                     }
                 };
             }
-#else
-            // TODO
-            return null;
-#endif        
         }
 
-        bool IElectionProvider.SendResults(ElectionEntity election)
+        bool IElectionProvider.UploadResults(UserEntity user, CommissionEntity commission, ElectionEntity election, CandidateEntity[] candidates)
         {
-#if DEBUG
-            var message = "Czy odebrać dane z wynikami wyborów ?";                
+            var message = "Czy odebrać dane z wynikami wyborów ?";
             var result = ShowMessage(message);
 
             // symuluje opóżnienia w komunikacji z zewnętrzną usługą
             Thread.Sleep(3000);
 
             return (result == MessageBoxResult.OK);
-#else
-            // TODO
-            return false;
-#endif
         }
     }
 }

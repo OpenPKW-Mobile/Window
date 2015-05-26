@@ -9,6 +9,11 @@ namespace OpenPKW_Mobile.Entities
     public class CandidateEntity : EntityBase
     {
         /// <summary>
+        /// Identyfikator kandydata.
+        /// </summary>
+        public string Id { get; set; }
+        
+        /// <summary>
         /// Nazwisko.
         /// </summary>
         public string Surname { get; set; }
@@ -28,25 +33,24 @@ namespace OpenPKW_Mobile.Entities
         /// </summary>
         public int? Votes { get; set; }
 
-
         public override string Identifier
         {
             get 
             {
-                if (SecondName != null)
-                {
-                    return String.Format("{0} {1}, {2}", Surname.ToUpper(), FirstName, Surname);
-                }
-                else
-                {
-                    return String.Format("{0} {1}", Surname.ToUpper(), FirstName);
-                }
+                return Id.ToString();
             }
         }
 
         public override string ToString()
         {
-            return Identifier;
+            if (SecondName != null)
+            {
+                return String.Format("{0} {1}, {2}", Surname.ToUpper(), FirstName, Surname);
+            }
+            else
+            {
+                return String.Format("{0} {1}", Surname.ToUpper(), FirstName);
+            }
         }
     }
 }

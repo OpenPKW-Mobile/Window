@@ -9,13 +9,12 @@ using System.Windows;
 
 namespace OpenPKW_Mobile.Providers
 {
-    class OpmStorageProvider : ProviderBase, IStorageProvider
+    class SymStorageProvider : ProviderBase, IStorageProvider
     {
         public event Action<int> ProgressChanged;
 
         bool IStorageProvider.UploadFile(string commissionID, string fileName, Stream fileStream)
         {
-#if DEBUG
             var message = String.Format("Czy odebrać plik o nazwie '{0}' ?", fileName);
             var result = ShowMessage(message);
 
@@ -36,9 +35,5 @@ namespace OpenPKW_Mobile.Providers
 
             return (result == MessageBoxResult.OK);
         }
-#else
-        // TODO
-        return false;
-#endif
     }
 }
